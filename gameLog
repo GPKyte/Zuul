@@ -1,0 +1,76 @@
+6:30 PM 3/13/2017
+	Discussed the game plot and layout of the class hierchy with Aaron.
+
+8:15 PM
+	Left to get food.
+	Log out.
+
+9:40 PM 3/16/2017
+	Starting to look at the implementation and want to start with a clean slate
+	Creating class Item.
+
+10:15 PM
+	Ran into brief roadblock, looking into the requirements of D-level to focus on the basics
+	By roadblock I mean, not sure what to prioritize
+	- Looking into the Room class and how to hold the items.
+	
+10:23
+	With regard to the NPC we want to make, wondering if we should have their presence
+	determined by boolean and "flip" it to change their location OR make an NPC class with
+	the killer as an instance, they would then change rooms by being put into that room's list.
+
+	In the latter case, the killer could have it's own current room and search that room for
+	exits, randomly choosing one to go through. In that sense, it's location could be managed
+	by the game class. BUT that seems like bad coupling.
+
+10:34
+	Looking into parser impl. Nevermind, looking at the Game class and then deciding on a
+	rough layout of our Rooms
+
+10:41-50
+	Writing description of game, also had an idea about character builds and the ability to hide.
+
+10:57
+	Adding files to GitHub for initial commit. Ending session.
+
+3:00 PM 3/17/2017
+	Starting review of Zuul before Friday submission. Goals, get published to GitHub, determine the
+	logs of each participant, address current needs in the program, make progress on the naming and
+	structure of the rooms in our Game.map.
+
+	Discussed what would be necessary to keep in our logs as we don't want to be redundant.
+
+3:04
+	Brainstorming the storage and creating of rooms:
+	- Create and set each exit manually
+	- Have one method that takes variable parameters
+		- OR a list that has all of the info in one line
+	- 
+Side note: can add a method to Room called addScene, that would allow for variable descriptions,
+	this would be coupled with changeScene which would replace or alter the current description in some way.
+
+	Going to focus on the Game.java class specifically for the turn in today.
+
+3:15
+	Wondering if logically there is any way to have the parser handle the commands, or to separate 
+	Command from Game or Command from Parser to reduce coupling. It seems redundant to have the class
+	connected to both Parser and Game.
+	
+3:20
+	Thinking about the room's fields and the parameters it needs to be created, and what it needs for other scenes
+	The constructor will only be able to do a limited amount of what we want to implement
+	if it only takes a parameter of longDescription. Would it be better then to have methods
+	that create the other scenes, make exits, etc, or to have some of this handled by the constructor.
+
+	- Have a default descripton for rooms that haven't been implemented.
+	
+3:27
+	Going to abstract our map into a separate class so that we can keep the engine and possibly use
+	it on different versions of the game.
+
+3:46
+	Thinking about the map class and getting the rooming situation sorted out.
+
+3:54 PM
+	Turning in now. NOTE: the game does not work, but it does compile. That is all.
+	Logging Off.
