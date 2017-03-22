@@ -13,7 +13,7 @@ import java.util.HashMap;
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
+ * @author  Gavin Kyte and Aaron Chauvette
  * @version 2016.02.29
  */
 
