@@ -97,4 +97,16 @@ Side note: can add a method to Room called addScene, that would allow for variab
 
 	It's not worthwhile to have a Map class. making change now.
 
+9:33
+	Think that I have travel sorted out.
 
+10:34
+	Working on how to have NPC choose an exit, was returning a Set, but no way of choosing one thing within
+	a set that I can tell. So I'm changing it to an Array (don't need ArrayList)
+
+10:56
+	Forgot how to set length of array. Didn't include "new" oops.
+
+11:15
+	Have working version. Very basic, can move through rooms, NPC moves. Need to work on Item and interactions.
+	Have decent hierchy in order. Going to sync with Aarons work.

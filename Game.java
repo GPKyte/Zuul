@@ -38,6 +38,8 @@ public class Game
         parser = new Parser();
         hero = new Player("Hero", "Patient Care");
         villain = new NPC();
+        currentRoom = map.get(hero.getRoom());
+        randomGenerator = new Random();
     }
 
     /**
@@ -160,9 +162,9 @@ public class Game
         // DANGER!! This could be root of weird error down the line involving currentRoom
         currentRoom = map.get(villain.getRoom());
         String[] exits = currentRoom.getExitDirections();
-        String randomNeighbor = exits[randomGenerator.nextInt(exits.length)];
+        String randomDirection = exits[randomGenerator.nextInt(exits.length)];
         
-        Room nextRoom = map.get(randomNeighbor);
+        Room nextRoom = currentRoom.getExit(randomDirection);
         villain.setRoom(nextRoom.getTitle());
         currentRoom = map.get(hero.getRoom());
     }
