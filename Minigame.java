@@ -10,11 +10,11 @@ public class Minigame
 {
     // instance variables - replace the example below with your own
     private Random rng;
-    private int playerHealth;
-    private int killerHealth;
+    private float playerHealth;
+    private float killerHealth;
     private Scanner reader;
-    private int playerPower;
-    private int killerPower;
+    private float playerPower;
+    private float killerPower;
     
 
     /**
@@ -24,15 +24,21 @@ public class Minigame
     {
         playerHealth = 10;
         killerHealth = 10;
-        playerPower = 1;
-        killerPower = 1;
+        playerPower = 3;
+        killerPower = 3;
         rng = new Random();
         reader = new Scanner(System.in);
+    }
+    public float playerDamage(){
+        return playerPower * (playerHealth/10);
+    }
+    public float killerDamage(){
+        return killerPower * (killerHealth/10);
     }
     public int killerTurn()
     {
         return rng.nextInt(3);
-    }
+    } 
     public int playerTurn()
     {
         System.out.println("What will you do?");
@@ -73,51 +79,51 @@ public class Minigame
             }
             else if(user == 2){
                 System.out.println("You block the attack and land a counter-attack.");
-                killerHealth -= playerPower;
+                killerHealth -= playerDamage();
             }
             else if(user == 3){
                 System.out.println("The killer catches you off guard and strikes you.");
-                playerHealth -= killerPower;
+                playerHealth -= killerDamage();
             }
             else if(user == 4){
                 System.out.println("You parry the killer's strike and they stumble. You sweep the killer's leg and make a critical strike");
-                killerHealth -= 2 * playerPower;
+                killerHealth -= 2 * playerDamage();
             }
         }
         else if(killer == 1){
             System.out.println("The killer tries to block.");
             if(user == 1){
                 System.out.println("The killer blocks your strike and counters it.");
-                playerHealth -= killerPower;
+                playerHealth -= killerDamage();
             }
             else if(user == 2){
                 System.out.println("Neither of you move.");
             }
             else if(user == 3){
                 System.out.println("The killer is caught off guard by your bluff and you land a strike.");
-                killerHealth -= playerPower;
+                killerHealth -= playerDamage();
             }
             else if(user == 4){
                 System.out.println("The killer strikes you.");
-                playerHealth -= killerPower;
+                playerHealth -= killerDamage();
             }
         }
         else if(killer == 2){
             System.out.println("The killer attempts to feint.");
             if(user == 1){
                 System.out.println("The killer is caught off guard by your strike.");
-                killerHealth -= playerPower;
+                killerHealth -= playerDamage();
             }
             else if(user == 2){
                 System.out.println("You fall for the killer's bluff and take a hit.");
-                playerHealth -= killerPower;
+                playerHealth -= killerDamage();
             }
             else if(user == 3){
                 System.out.println("Neither of your bluffs succeed.");
             }
             else if(user == 4){
                 System.out.println("The killer strikes you.");
-                playerHealth -= killerPower;
+                playerHealth -= killerDamage();
             }
         }
 
@@ -134,7 +140,7 @@ public class Minigame
                 fight = false;
             }
             else if(killerHealth <= 0){
-                System.out.println("You defeated the killer!");
+                System.out.println("You defeated the wild killer!");
                 fight = false;
             }
         }
