@@ -13,9 +13,6 @@ public class NPC extends Player
     public NPC(){
         super("Villain", "Basement");
     }
-    public void move(){
-        
-    }
     /**
      * Possible trigger for fighting minigame
      *
