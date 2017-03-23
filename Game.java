@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Random;
 
 /**
@@ -24,6 +25,7 @@ public class Game
     private Room currentRoom;
     private HashMap<String, Room> map;
     private Player hero;
+    private Player villain;
     private Random randomGenerator;
         
     /**
@@ -35,6 +37,7 @@ public class Game
         createRooms();
         parser = new Parser();
         hero = new Player("Hero", "Patient Care");
+        villain = new NPC();
     }
 
     /**
@@ -144,21 +147,25 @@ public class Game
             currentRoom = nextRoom;
             hero.setRoom(currentRoom.getTitle());
             System.out.println(currentRoom.getLongDescription());
-            // moveNPCS();
+            moveNPC();
         }
     }
 
     /**
      * Moves each NPC in the Map into an adjacent room
      *
-    private void moveNPCS(){
+     */
+    private void moveNPC(){
         // Going to make this choice random eventually
+        // DANGER!! This could be root of weird error down the line involving currentRoom
+        currentRoom = map.get(villain.getRoom());
+        String[] exits = currentRoom.getExitDirections();
+        String randomNeighbor = exits[randomGenerator.nextInt(exits.length)];
         
-        
-        Room nextRoom = ;
+        Room nextRoom = map.get(randomNeighbor);
+        villain.setRoom(nextRoom.getTitle());
+        currentRoom = map.get(hero.getRoom());
     }
-    */
-   
    
     /** 
      * "Quit" was entered. Check the rest of the command to see

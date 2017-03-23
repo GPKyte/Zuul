@@ -76,7 +76,7 @@ public class Room
      */
     private String getExitString(){
         String returnString = "Exits:";
-        Set<String> keys = listExits();
+        Set<String> keys = exits.keySet();
         for(String exit : keys) {
             returnString += " " + exit;
         }
@@ -84,11 +84,17 @@ public class Room
     }
 
     /**
-     * Provides list of exits determined by the keys of HashMap holding exits
-     * @return Set containing directions of available exits 
+     * Provides list of exits determined by the keys of exits HashMap
+     * @return Array containing available exit directions
      */
-    public Set<String> listExits(){
-        return exits.keySet();
+    public String[] getExitDirections(){
+        String[] allExits = new String[exits.size()];
+        int i = 0;
+        for (String exit : exits.keySet()){
+            allExits[i] = exit;
+            i++;
+        }
+        return allExits;
     }
         
     /**
