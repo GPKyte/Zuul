@@ -74,3 +74,27 @@ Side note: can add a method to Room called addScene, that would allow for variab
 3:54 PM
 	Turning in now. NOTE: the game does not work, but it does compile. That is all.
 	Logging Off.
+
+7:26 PM 3/22/2017
+	Log in.
+	Aaron working on minigames. Gavin working on class hierchy and some implementation of Game, Map, Item
+	Thinking that the map will hold each room and that currentRoom may become a string that is used as a key.
+	This has the benefit of keeping the rooms associated with Map and not game directly.
+
+	Want to have the currentRoom var held in each player's fields, rather than inside of game. This has the
+	benefit of making it easier to have multiple players controlled by the environment. The main player
+	may still have a current room associated with themselves inside of game class, but ideally not. We shall see.
+
+	Side note: I understand why game has access to command words now. I think we can change it. Later.
+
+8:00
+	Deciding against having Map class, but want to keep it.
+
+8:28
+	Is it worthwhile to keep the current room inside of player? When I think about adding other players,
+	I think it is, but game has to provide the information to change player location because Game
+	has access to Map.
+
+	It's not worthwhile to have a Map class. making change now.
+
+
