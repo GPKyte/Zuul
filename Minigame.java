@@ -3,8 +3,8 @@ import java.util.Scanner;
 /**
  * Write a description of class Minigame here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Aaron Chauvette
+ * @version 3/22/17
  */
 public class Minigame
 {
@@ -18,7 +18,7 @@ public class Minigame
     
 
     /**
-     * Constructor for objects of class Minigame
+     * Constructor for Minigame
      */
     public Minigame()
     {
@@ -29,17 +29,17 @@ public class Minigame
         rng = new Random();
         reader = new Scanner(System.in);
     }
-    public float playerDamage(){
+    public float playerDamage(){// Calculates how much damage the killer will take.
         return playerPower * (playerHealth/10);
     }
-    public float killerDamage(){
+    public float killerDamage(){// Calculates how much damage the player will take.
         return killerPower * (killerHealth/10);
     }
-    public int killerTurn()
+    public int killerTurn()//Decides the killer's move.
     {
         return rng.nextInt(3);
     } 
-    public int playerTurn()
+    public int playerTurn()//Player picks a move.
     {
         System.out.println("What will you do?");
         System.out.println("[1] Strike   [2] Block   [3] Feint   [4] Parry");
@@ -68,7 +68,7 @@ public class Minigame
         }
         return playerMove;
     }
-    public void gameTurn()
+    public void gameTurn()//outcome of turn.
     {
         int user = playerTurn();
         int killer = killerTurn();
@@ -128,7 +128,7 @@ public class Minigame
         }
 
     }
-    public void killerBattle()
+    public void killerEncounter()//Starts the minigame.
     {
         boolean fight = true;
         System.out.println("A wild killer appears!");
@@ -145,12 +145,4 @@ public class Minigame
             }
         }
     }
-
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-
 }
