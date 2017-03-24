@@ -10,8 +10,8 @@ public class NPC extends Player
     /**
      * Constructor for objects of class NPC
      */
-    public NPC(){
-        super("Villain", "Basement");
+    public NPC(String name, String room){
+        super(name, room);
     }
 
     /**

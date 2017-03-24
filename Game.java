@@ -31,13 +31,12 @@ public class Game
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() 
-    {
+    public Game(){
         map = new HashMap<>();
         createRooms();
         parser = new Parser();
         hero = new Player("Hero", "Patient Care");
-        villain = new NPC();
+        villain = new NPC("Villain", "Basement");
         currentRoom = map.get(hero.getRoom());
         randomGenerator = new Random();
     }
@@ -45,15 +44,14 @@ public class Game
     /**
      *  Main play routine.  Loops until end of play.
      */
-    public void play() 
-    {            
+    public void play(){            
         printWelcome();
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
                 
         boolean finished = false;
-        while (! finished) {
+        while (! finished){
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
@@ -63,8 +61,7 @@ public class Game
     /**
      * Print out the opening message for the player.
      */
-    private void printWelcome()
-    {
+    private void printWelcome(){
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
@@ -78,25 +75,32 @@ public class Game
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
-    {
+    private boolean processCommand(Command command){
         boolean wantToQuit = false;
 
-        if(command.isUnknown()) {
+        if(command.isUnknown()){
             System.out.println("I don't know what you mean...");
             return false;
         }
 
         String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
-            printHelp();
+        switch (commandWord){
+            case "help":
+                printHelp();
+                break;
+            case "go":
+                goRoom(command);
+                break;
+            case "back":
+                goBack(hero);
+                break;
+            case "quit":
+                wantToQuit = quit(command);
+                break;
+            default:
+                break;           
         }
-        else if (commandWord.equals("go")) {
-            goRoom(command);
-        }
-        else if (commandWord.equals("quit")) {
-            wantToQuit = quit(command);
-        }
+        
         // else command not recognised.
         return wantToQuit;
     }
@@ -105,8 +109,18 @@ public class Game
      * The AI moves and the environment may change
      * i.e. the descriptions and presence of items may change
      */
-    private void npcTurn() {
+    private void npcTurn(){
         
+    }
+    
+    /**
+     * Returns player to the previous room. This means that if this
+     * is called each turn, the player will alternate between two rooms
+     * DANGER: This currently would bypass locked doors and trapdoors as
+     * it goes directly to the room without checking if it can be entered.
+     */
+    private void goBack(Player player){
+        player.goBack();
     }
     
     // implementations of user commands:
@@ -115,8 +129,7 @@ public class Game
      * Here we print some stupid, cryptic message and a list of the 
      * command words.
      */
-    private void printHelp() 
-    {
+    private void printHelp(){
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the hospital.");
         System.out.println();
@@ -128,8 +141,7 @@ public class Game
      * Try to in to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goRoom(Command command) 
-    {
+    private void goRoom(Command command){
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
@@ -144,15 +156,14 @@ public class Game
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
-        }
-        else {
+        } else {
             currentRoom = nextRoom;
             hero.setRoom(currentRoom.getTitle());
             System.out.println(currentRoom.getLongDescription());
             moveNPC();
         }
     }
-
+    
     /**
      * Moves each NPC in the Map into an adjacent room
      *
