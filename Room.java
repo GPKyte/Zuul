@@ -53,6 +53,14 @@ public class Room
     }
     
     /**
+     * Get content description for looking around room
+     * @return String two lines with exits and items in room
+     */
+    public String look(){
+        return getExitString() + "\n" + listItems();
+    }
+    
+    /**
      * @return The short description of the room
      * (the one that was defined in the constructor).
      */
@@ -109,6 +117,26 @@ public class Room
     }
     
     /**
+     * Returns list of items contained in room.
+     * @return String listing items in room.
+     */
+    public String listItems(){
+        String listOfItems = title + " has:"; 
+        for (String itemName : itemList.keySet()){
+            listOfItems += " " + itemName;
+        }
+        return listOfItems;
+    }
+    
+    /**
+     * Tells whether the room contains an object or not
+     * @return boolean contains item or not
+     */
+    public boolean contains(String itemName){
+        return (itemList.get(itemName) != null);
+    }
+    
+    /**
      * Adds an item to the room if it is not already in the room
      * @param Item to be stored
      */
@@ -118,7 +146,6 @@ public class Room
         } else {
             System.out.println("There is already a " + aItem.getName() + " in " + title);
         }
-        
     }
     
     public Item remove(String itemName){

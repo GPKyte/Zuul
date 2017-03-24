@@ -73,6 +73,10 @@ public class Player
         return bagContents;
     }
     
+    public boolean has(String itemName){
+        return (bag.get(itemName) != null);
+    }
+    
     public void addItem(Item item){
         bag.put(item.getName(), item);
     }

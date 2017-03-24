@@ -100,11 +100,17 @@ public class Game
             case "drop":
                 putDown(hero, command);
                 break;
+            case "look":
+                look(hero);
+                break;    
+            case "inventory":
+                System.out.println(hero.getInventory());
+                break;
             case "quit":
                 wantToQuit = quit(command);
                 break;
             default:
-                break;           
+                break;
         }
         
         // else command not recognised.
@@ -120,7 +126,17 @@ public class Game
      */
     private void goBack(Player player){
         currentRoom = map.get(player.goBack());
+        System.out.println(currentRoom.getShortDescription());
     }
+    
+    /**
+     * Prints the current room's exits and items
+     */
+    private void look(Player player){
+        currentRoom = map.get(player.getRoom());
+        System.out.println(currentRoom.look());
+    }
+    
     
     // implementations of user commands:
     /**
@@ -184,20 +200,30 @@ public class Game
      * it to the player's inventory.
      * @param Player, Command as the item name
      */
-    private void pickUp(Player character, Command command){
-        currentRoom = map.get(character.getRoom());
+    private void pickUp(Player player, Command command){
+        currentRoom = map.get(player.getRoom());
         String itemName = command.getSecondWord();
-        character.addItem(currentRoom.remove(itemName));
+        if (currentRoom.contains(itemName)) {
+            player.addItem(currentRoom.remove(itemName));
+            System.out.println("You took " + itemName);
+        } else {
+            System.out.println("There is no " + itemName + " here.");
+        }
     }
     
     /**
      * Puts down an item in the current room and takes it out of inventory.
      * @param Player, Command as the item name
      */
-    public void putDown(Player character, Command command){
-        currentRoom = map.get(character.getRoom());
-        String itemName = command.getSecondWord();
-        currentRoom.store(character.drop(itemName));
+    private void putDown(Player player, Command command){
+        currentRoom = map.get(player.getRoom());
+        String itemName = command.getSecondWord();        
+        if (player.has(itemName)) {
+            currentRoom.store(player.drop(itemName));
+            System.out.println("You dropped " + itemName);
+        } else {
+            System.out.println("You don't have \"" + itemName + "\" in your inventory.");
+        }
     }
     
     /**
@@ -237,8 +263,8 @@ public class Game
         
         // Creating Items
         Item officeKey, bleach;
-        officeKey = new Item("Office Key", 0, true);
-        bleach = new Item("Bleach", 4, true);
+        officeKey = new Item("key", 0, true);
+        bleach = new Item("bleach", 4, true);
                     
         // Setting up exits and items between rooms:        
         // Patient Care
@@ -260,7 +286,7 @@ public class Game
         basement.store(officeKey);
         
         // Adding rooms to map
-        Room[] rooms = {patientCare, basement, cafe, office, bathroom};
+        Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall};
         for (Room room : rooms){
             map.put(room.getTitle(), room);
         }
