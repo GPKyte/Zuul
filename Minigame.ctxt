@@ -1,13 +1,17 @@
 #BlueJ class context
 comment0.params=
 comment0.target=Minigame()
-comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ Minigame\r\n
+comment0.text=\r\n\ Constructor\ for\ Minigame\r\n
 comment1.params=
-comment1.target=int\ killerTurn()
+comment1.target=float\ playerDamage()
 comment2.params=
-comment2.target=int\ playerTurn()
+comment2.target=float\ killerDamage()
 comment3.params=
-comment3.target=void\ gameTurn()
+comment3.target=int\ killerTurn()
 comment4.params=
-comment4.target=void\ killerBattle()
-numComments=5
+comment4.target=int\ playerTurn()
+comment5.params=
+comment5.target=void\ gameTurn()
+comment6.params=
+comment6.target=void\ killerEncounter()
+numComments=7

@@ -13,7 +13,6 @@ public class NPC extends Player
     public NPC(String name, String room){
         super(name, room);
     }
-
     /**
      * Possible trigger for fighting minigame
      *
