@@ -33,7 +33,7 @@ public class Game
      */
     public Game(){
         map = new HashMap<>();
-        createRooms();
+        prepareRooms();
         parser = new Parser();
         hero = new Player("Hero", "Patient Care");
         villain = new NPC("Villain", "Basement");
@@ -94,6 +94,12 @@ public class Game
             case "back":
                 goBack(hero);
                 break;
+            case "take":
+                pickUp(hero, command);
+                break;
+            case "drop":
+                putDown(hero, command);
+                break;
             case "quit":
                 wantToQuit = quit(command);
                 break;
@@ -104,15 +110,8 @@ public class Game
         // else command not recognised.
         return wantToQuit;
     }
-
-    /**
-     * The AI moves and the environment may change
-     * i.e. the descriptions and presence of items may change
-     */
-    private void npcTurn(){
-        
-    }
     
+    // Defining Commands    
     /**
      * Returns player to the previous room. This means that if this
      * is called each turn, the player will alternate between two rooms
@@ -120,7 +119,7 @@ public class Game
      * it goes directly to the room without checking if it can be entered.
      */
     private void goBack(Player player){
-        player.goBack();
+        currentRoom = map.get(player.goBack());
     }
     
     // implementations of user commands:
@@ -164,21 +163,6 @@ public class Game
         }
     }
     
-    /**
-     * Moves each NPC in the Map into an adjacent room
-     */
-    private void moveNPC(){
-        // Going to make this choice random eventually
-        // DANGER!! This could be root of weird error down the line involving currentRoom
-        currentRoom = map.get(villain.getRoom());
-        String[] exits = currentRoom.getExitDirections();
-        String randomDirection = exits[randomGenerator.nextInt(exits.length)];
-        
-        Room nextRoom = currentRoom.getExit(randomDirection);
-        villain.setRoom(nextRoom.getTitle());
-        currentRoom = map.get(hero.getRoom());
-    }
-   
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
@@ -195,9 +179,49 @@ public class Game
         }
     }
     
-    private void createRooms(){
-        Room patientCare, basement, cafe, office, bathroom, middleStall;
+    /**
+     * Picks up an item. I.e. removes it from a the current room if it exists and adds
+     * it to the player's inventory.
+     * @param Player, Command as the item name
+     */
+    private void pickUp(Player character, Command command){
+        currentRoom = map.get(character.getRoom());
+        String itemName = command.getSecondWord();
+        character.addItem(currentRoom.remove(itemName));
+    }
+    
+    /**
+     * Puts down an item in the current room and takes it out of inventory.
+     * @param Player, Command as the item name
+     */
+    public void putDown(Player character, Command command){
+        currentRoom = map.get(character.getRoom());
+        String itemName = command.getSecondWord();
+        currentRoom.store(character.drop(itemName));
+    }
+    
+    /**
+     * Moves each NPC in the Map into an adjacent room
+     */
+    private void moveNPC(){
+        // Going to make this choice random eventually
+        // DANGER!! This could be root of weird error down the line involving currentRoom
+        currentRoom = map.get(villain.getRoom());
+        String[] exits = currentRoom.getExitDirections();
+        String randomDirection = exits[randomGenerator.nextInt(exits.length)];
+        
+        Room nextRoom = currentRoom.getExit(randomDirection);
+        villain.setRoom(nextRoom.getTitle());
+        currentRoom = map.get(hero.getRoom());
+    }
+    
+    
+    /**
+     * Creates rooms and items, then sets up the exits for each room and stores the items
+     */    
+    private void prepareRooms(){
         // Creating rooms
+        Room patientCare, basement, cafe, office, bathroom, middleStall;
         patientCare = new Room("Patient Care", "A room with curtains surrounding several beds.\n"
             + "The bed in the far corner has some sheets sticking out under the curtain.");
         basement = new Room("Basement", "A dusty cement enclosure with strange machines\n"
@@ -211,22 +235,29 @@ public class Game
         middleStall = new Room("Bathroom Stall", "A dead body is slumped over in the stall.\n"
             + "At his feet is an open jug of bleach. He does not appear to be breathing.");
         
-
-        
-        // Setting up exit between rooms
+        // Creating Items
+        Item officeKey, bleach;
+        officeKey = new Item("Office Key", 0, true);
+        bleach = new Item("Bleach", 4, true);
+                    
+        // Setting up exits and items between rooms:        
+        // Patient Care
         patientCare.setExit("west", cafe);
         patientCare.setExit("south", bathroom);
-        
+        // Bathroom
         bathroom.setExit("north", patientCare);
         bathroom.setExit("east", middleStall);
         middleStall.setExit("west", bathroom);
-        
+        middleStall.store(bleach);
+        // Cafe
         cafe.setExit("down", basement);
         cafe.setExit("east", patientCare);
         cafe.setExit("south", office);
-        
+        // Office
         office.setExit("north", cafe);
+        // Basment
         basement.setExit("up", cafe);
+        basement.store(officeKey);
         
         // Adding rooms to map
         Room[] rooms = {patientCare, basement, cafe, office, bathroom};

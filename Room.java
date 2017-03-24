@@ -32,6 +32,7 @@ public class Room
         this.title = title;
         this.description = description;
         exits = new HashMap<>();
+        itemList = new HashMap<>();
     }
 
     /**
@@ -105,6 +106,25 @@ public class Room
      */
     public Room getExit(String direction){
         return exits.get(direction);
+    }
+    
+    /**
+     * Adds an item to the room if it is not already in the room
+     * @param Item to be stored
+     */
+    public void store(Item aItem){
+        if (itemList.get(aItem.getName()) == null){
+            itemList.put(aItem.getName(), aItem);
+        } else {
+            System.out.println("There is already a " + aItem.getName() + " in " + title);
+        }
+        
+    }
+    
+    public Item remove(String itemName){
+        Item chosenItem = itemList.get(itemName);
+        itemList.remove(itemName);
+        return chosenItem;
     }
 }
 

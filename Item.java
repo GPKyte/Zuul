@@ -30,7 +30,7 @@ public class Item
     public boolean canTake(){
         return canTake;
     }
-    public void updateItem(String name,int weight,boolean canTake){
+    public void updateItem(String name, int weight, boolean canTake){
         this.name = name;
         this.weight = weight;
         this.canTake = canTake;

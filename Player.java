@@ -72,4 +72,14 @@ public class Player
         }
         return bagContents;
     }
+    
+    public void addItem(Item item){
+        bag.put(item.getName(), item);
+    }
+    
+    public Item drop(String itemName){
+        Item chosenItem = bag.get(itemName);
+        bag.remove(itemName);
+        return chosenItem;
+    }
 }
