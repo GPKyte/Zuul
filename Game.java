@@ -166,7 +166,6 @@ public class Game
     
     /**
      * Moves each NPC in the Map into an adjacent room
-     *
      */
     private void moveNPC(){
         // Going to make this choice random eventually
@@ -197,23 +196,40 @@ public class Game
     }
     
     private void createRooms(){
-        Room patientCare, basement, cafe, office;
+        Room patientCare, basement, cafe, office, bathroom, middleStall;
         // Creating rooms
-        patientCare = new Room("Patient Care", "A room with curtains surrounding several beds.");
-        basement = new Room("Basement", "A dusty cement enclosure with strange machines and boxes scattered about.");
-        cafe = new Room("Cafe", "A open space filled with table and surrounded with boothes that once served food. You smell something rancid.");
-        office = new Room("Office", "A small space with file cabinets lining the back wall, there is a desk to your right.");
+        patientCare = new Room("Patient Care", "A room with curtains surrounding several beds.\n"
+            + "The bed in the far corner has some sheets sticking out under the curtain.");
+        basement = new Room("Basement", "A dusty cement enclosure with strange machines\n"
+            + "and boxes scattered about.");
+        cafe = new Room("Cafe", "A open space filled with tables and surrounded\n" 
+            + "with boothes that once served food. You smell something rancid.");
+        office = new Room("Office", "A small space with file cabinets lining the back wall,\n" 
+            + "there is a desk to your right.");
+        bathroom = new Room("Bathroom", "A pristine white room that reeks of bleach.\n"
+            + "All of the stalls are closed except one in the middle");
+        middleStall = new Room("Bathroom Stall", "A dead body is slumped over in the stall.\n"
+            + "At his feet is an open jug of bleach. He does not appear to be breathing.");
+        
+
         
         // Setting up exit between rooms
         patientCare.setExit("west", cafe);
+        patientCare.setExit("south", bathroom);
+        
+        bathroom.setExit("north", patientCare);
+        bathroom.setExit("east", middleStall);
+        middleStall.setExit("west", bathroom);
+        
         cafe.setExit("down", basement);
         cafe.setExit("east", patientCare);
-        cafe.setExit("south", office);        
+        cafe.setExit("south", office);
+        
         office.setExit("north", cafe);
         basement.setExit("up", cafe);
         
         // Adding rooms to map
-        Room[] rooms = {patientCare, basement, cafe, office};
+        Room[] rooms = {patientCare, basement, cafe, office, bathroom};
         for (Room room : rooms){
             map.put(room.getTitle(), room);
         }
