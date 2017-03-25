@@ -1,9 +1,10 @@
 
 /**
- * Write a description of class Item here.
+ * Items are objects that the players can pick up. They are also stored in rooms.
+ * Items have a weight, title, and can either be picked up or not.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Gavin Kyte and Aaron Chauvette 
+ * @version 2017.3.21
  */
 public class Item
 {
@@ -15,7 +16,7 @@ public class Item
     /**
      * Constructor for objects of class Item
      */
-    public Item(String name,float weight,boolean canTake)
+    public Item(String name, float weight, boolean canTake)
     {
         this.name = name;
         this.weight = weight;
@@ -30,7 +31,7 @@ public class Item
     public boolean canTake(){
         return canTake;
     }
-    public void updateItem(String name,float weight,boolean canTake){
+    public void updateItem(String name, float weight, boolean canTake){
         this.name = name;
         this.weight = weight;
         this.canTake = canTake;

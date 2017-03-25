@@ -110,3 +110,63 @@ Side note: can add a method to Room called addScene, that would allow for variab
 11:15
 	Have working version. Very basic, can move through rooms, NPC moves. Need to work on Item and interactions.
 	Have decent hierchy in order. Going to sync with Aarons work.
+
+12:02 PM 3/23/2017
+	Looking over minigame and hopefully reworking parser and commands. How do we want parser and commands used?
+	
+	Brainstorming:
+	What is our game? It's a text-based rpg that allows one to move between rooms (seeing their descriptions),
+	interact with objects in rooms, cause events that change room and item states of being, make items, and more.
+	The parser is designed to get an input string from the user every turn, it works beautifully. So, how do
+	we determine what is said by the user in a way that applies to all rooms?
+	- Well, we currently use a very limited and controlled set of command words in the form of (command, detail)
+	  This form does not account for multi word commands, nor single word commands like having a shorthand to go
+	  east, west, north, south as e, w, n, s (As is the notation in ZORK)
+	- The goal now is to determine what we want to use and plan a system to make that work.
+
+	Generally what command types would there be?
+	- Move / Go *
+	- Make / Create ***
+	- Use *
+	- Attack *
+	- Talk to *
+	- Look
+	- Take / Pick up / Grab *
+	- Show inventory
+	- Show map
+	- Get Help / help
+	- Quit
+	- Open *
+	- Lock *
+	- Hide
+	- Change difficulty (May just have this in the beginning only)
+	- Drop / remove *
+	
+12:45	
+	So inside of Game, we'll use processCommand, and let's see if we can deprecate a level of command.
+	I'll look at the project desciption for now and see if I can get any ideas.
+
+12:54
+	Going to create a separate file with a list of functionality for levels D through A
+
+1:05
+	Implementing the back command. Will create a list in player that will hold history of rooms.
+
+1:16
+	Should I have the back command take them to their last room, or undo their movements? Think that I'll
+	make it easy to switch later on, but use last room for now.
+
+1:26
+	Thinking about this:
+	roomHistory is {A, B, C}
+	Go back
+	is {A, B, C, B}
+
+1:30 PM 3/23/2017
+	Logging Out. Getting food.
+
+8:35 PM 3/23/2017
+	Finishing some changes, then syncing up to review.
+
+9:21 
+	Resolving changes on github was a pain. Added some room details.

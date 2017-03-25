@@ -32,6 +32,7 @@ public class Room
         this.title = title;
         this.description = description;
         exits = new HashMap<>();
+        itemList = new HashMap<>();
     }
 
     /**
@@ -49,6 +50,14 @@ public class Room
      */
     public String getTitle(){
         return title;
+    }
+    
+    /**
+     * Get content description for looking around room
+     * @return String two lines with exits and items in room
+     */
+    public String look(){
+        return getExitString() + "\n" + listItems();
     }
     
     /**
@@ -105,6 +114,44 @@ public class Room
      */
     public Room getExit(String direction){
         return exits.get(direction);
+    }
+    
+    /**
+     * Returns list of items contained in room.
+     * @return String listing items in room.
+     */
+    public String listItems(){
+        String listOfItems = title + " has:"; 
+        for (String itemName : itemList.keySet()){
+            listOfItems += " " + itemName;
+        }
+        return listOfItems;
+    }
+    
+    /**
+     * Tells whether the room contains an object or not
+     * @return boolean contains item or not
+     */
+    public boolean contains(String itemName){
+        return (itemList.get(itemName) != null);
+    }
+    
+    /**
+     * Adds an item to the room if it is not already in the room
+     * @param Item to be stored
+     */
+    public void store(Item aItem){
+        if (itemList.get(aItem.getName()) == null){
+            itemList.put(aItem.getName(), aItem);
+        } else {
+            System.out.println("There is already a " + aItem.getName() + " in " + title);
+        }
+    }
+    
+    public Item remove(String itemName){
+        Item chosenItem = itemList.get(itemName);
+        itemList.remove(itemName);
+        return chosenItem;
     }
 }
 
