@@ -10,11 +10,11 @@ public class Minigame
 {
     // instance variables - replace the example below with your own
     private Random rng;
-    private float playerHealth;
-    private float killerHealth;
+    private double playerHealth;
+    private double killerHealth;
     private Scanner reader;
-    private float playerPower;
-    private float killerPower;
+    private double playerPower;
+    private double killerPower;
     
 
     /**
@@ -29,10 +29,10 @@ public class Minigame
         rng = new Random();
         reader = new Scanner(System.in);
     }
-    public float playerDamage(){// Calculates how much damage the killer will take.
+    public double playerDamage(){// Calculates how much damage the killer will take.
         return playerPower * (playerHealth/10);
     }
-    public float killerDamage(){// Calculates how much damage the player will take.
+    public double killerDamage(){// Calculates how much damage the player will take.
         return killerPower * (killerHealth/10);
     }
     public int killerTurn()//Decides the killer's move.

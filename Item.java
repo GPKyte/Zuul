@@ -9,13 +9,13 @@ public class Item
 {
     // instance variables - replace the example below with your own
     private String name;
-    private float weight;
+    private double weight;
     private boolean canTake;
 
     /**
      * Constructor for objects of class Item
      */
-    public Item(String name,float weight,boolean canTake)
+    public Item(String name,double weight,boolean canTake)
     {
         this.name = name;
         this.weight = weight;
@@ -24,13 +24,13 @@ public class Item
     public String getName(){
         return name;
     }
-    public float getWeight(){
+    public double getWeight(){
         return weight;
     }
     public boolean canTake(){
         return canTake;
     }
-    public void updateItem(String name,float weight,boolean canTake){
+    public void updateItem(String name,double weight,boolean canTake){
         this.name = name;
         this.weight = weight;
         this.canTake = canTake;
