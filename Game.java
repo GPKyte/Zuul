@@ -26,7 +26,7 @@ public class Game
     private HashMap<String, Room> map;
     private Player hero;
     private Player villain;
-    private Random randomGenerator;
+    private Random rng;
         
     /**
      * Create the game and initialise its internal map.
@@ -38,7 +38,7 @@ public class Game
         hero = new Player("Hero", "Patient Care");
         villain = new NPC("Villain", "Basement");
         currentRoom = map.get(hero.getRoom());
-        randomGenerator = new Random();
+        rng = new Random();
     }
 
     /**
@@ -203,9 +203,19 @@ public class Game
     private void pickUp(Player player, Command command){
         currentRoom = map.get(player.getRoom());
         String itemName = command.getSecondWord();
-        if (currentRoom.contains(itemName)) {
-            player.addItem(currentRoom.remove(itemName));
-            System.out.println("You took " + itemName);
+        
+        if (currentRoom.contains(itemName)) {            
+            double itemWeight = currentRoom.getItem(itemName).getWeight();
+            double carryLimit = player.getWeightLimit();
+            boolean canTake = currentRoom.getItem(itemName).canTake();
+            if (canTake && (itemWeight <= carryLimit)){
+                player.addItem(currentRoom.remove(itemName));
+                System.out.println("You took " + itemName);
+            } else if (!canTake) {
+                System.out.println("This item can't be picked up");
+            } else {
+                System.out.println("This item is too heavy for you to pick up right now.");
+            }
         } else {
             System.out.println("There is no " + itemName + " here.");
         }
@@ -234,11 +244,13 @@ public class Game
         // DANGER!! This could be root of weird error down the line involving currentRoom
         currentRoom = map.get(villain.getRoom());
         String[] exits = currentRoom.getExitDirections();
-        String randomDirection = exits[randomGenerator.nextInt(exits.length)];
+        String randomDirection = exits[rng.nextInt(exits.length)];
         
         Room nextRoom = currentRoom.getExit(randomDirection);
         villain.setRoom(nextRoom.getTitle());
-        currentRoom = map.get(hero.getRoom());
+        System.out.println("Villain is in " + villain.getRoom());
+        // If we need to reset current room, this next line will do so
+        //currentRoom = map.get(hero.getRoom());
     }
     
     

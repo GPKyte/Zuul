@@ -153,5 +153,11 @@ public class Room
         itemList.remove(itemName);
         return chosenItem;
     }
+    
+    public Item getItem(String itemName){
+        Item item = null;
+        if (contains(itemName)) {item = itemList.get(itemName);}
+        return item;
+    }
 }
 

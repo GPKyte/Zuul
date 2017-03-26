@@ -3,7 +3,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 /**
- * Write a description of class Player here.
+ * The player is able to hold items, "go" to different rooms and fight other players
  * 
  * @author Gavin Kyte and Aaron Chauvette
  * @version 2017.3.23
@@ -16,6 +16,8 @@ public class Player
     private int health;
     private ArrayList<String> roomHistory;
     private HashMap<String, Item> bag;
+    private Item myWeapon;
+    private double weightLimit;
 
     /**
      * Constructor for objects of class Player
@@ -24,6 +26,8 @@ public class Player
         this.name = name;
         currentRoom = roomName;
         health = 100;
+        weightLimit = 100.00;
+        myWeapon = null;
         roomHistory = new ArrayList<>();
         bag = new HashMap<>();
     }
@@ -73,6 +77,19 @@ public class Player
         return bagContents;
     }
     
+    /**
+     * Gets the weight limit for this player. This is how much more can be carried,
+     * rather than the total. So that we can check new items before adding them.
+     * @return double with remaining carry limit
+     */
+    public double getWeightLimit(){
+        double totalWeightCarried = 0;
+        for (Item i : bag.values()){
+            totalWeightCarried += bag.get(i).getWeight();
+        }
+        return (weightLimit - totalWeightCarried);
+    }
+        
     public boolean has(String itemName){
         return (bag.get(itemName) != null);
     }
