@@ -170,3 +170,28 @@ Side note: can add a method to Room called addScene, that would allow for variab
 
 9:21 
 	Resolving changes on github was a pain. Added some room details.
+
+11:09
+	Added functionality to interact with items.
+	Getting null pointer exception, exploring why.
+
+11:54
+	The Item class works, can pick up and put down objects now. Adding safeguards.
+
+12:48
+	We won the basketball game!
+
+1:43 AM 3/24/2017
+	Commited to GitHub, improved interaction with items between room and player.
+	One of the next goals is to have notifications about the location of the NPC.
+	Then I'd like to trigger the fighting minigame that Aaron put together.
+	We'll then need to create the weapons class and at that point it will be important
+	continue storyboarding and get that sorted out.
+
+2:00 PM 3/24/2017
+	Want to add in minigame.
+	Want to specialize rooms. (Should use casting)
+
+	Looking at implementation of minigame before discussing with Aaron to use it correctly.
+
+
