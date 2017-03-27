@@ -24,6 +24,7 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private HashMap<String, Room> map;
+    private HashMap<String, Player> characters;
     private Player hero;
     private Player villain;
     private Random rng;
@@ -33,10 +34,10 @@ public class Game
      */
     public Game(){
         map = new HashMap<>();
+        characters = new HashMap<>();
         prepareRooms();
+        makeCharacters();
         parser = new Parser();
-        hero = new Player("Hero", "Patient Care");
-        villain = new NPC("Villain", "Basement");
         currentRoom = map.get(hero.getRoom());
         rng = new Random();
     }
@@ -107,12 +108,15 @@ public class Game
             case "inventory":
                 System.out.println(hero.getInventory());
                 break;
-			case "unlock":
-				changeLockTo(hero, command, false);
-				break;
-			case "lock":
-				changeLockTo(hero, command, true);
-				break;
+            case "unlock":
+                changeLockTo(hero, command, false);
+                break;
+            case "lock":
+                changeLockTo(hero, command, true);
+                break;
+            case "fight":
+                fight(hero, command);
+                break;
             case "quit":
                 wantToQuit = quit(command);
                 break;
@@ -152,8 +156,8 @@ public class Game
      * command words.
      */
     private void printHelp(){
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the hospital.");
+        System.out.println("You are lost. You are alone.");
+        System.out.println("You wander around the hospital.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -162,6 +166,7 @@ public class Game
     /** 
      * Try to in to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
+     * @param Command user input for chosen room
      */
     private void goRoom(Command command){
         if(!command.hasSecondWord()) {
@@ -178,9 +183,7 @@ public class Game
         
         // Casting room as correct type
         if (nextRoom instanceof LockedRoom) { nextRoom = (LockedRoom)nextRoom;}        
-        
-        
-        
+                
         if (nextRoom == null) {
             System.out.println("There is no door!");
         } else if (nextRoom.meetsRequirements()) {
@@ -206,6 +209,16 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    /**
+     * The player has won if he meets all the conditions.
+     * Prints out the winning message and ends the play loop.
+     * @return boolean quit the game
+     */
+    private boolean win(){
+        // Not sure when this is triggered or when it will meet the right conditions
+        return true;
     }
     
     /**
@@ -250,40 +263,86 @@ public class Game
     }
     
     /**
-     * Unlocks room if it needs to be unlocked and next to player
+     * Locks or unlocks the room if it is next to player
+     * @param Player main character usually, Command user input, boolean "Are you locking room?"
      */
     private void changeLockTo(Player player, Command command, boolean locking){
         if (!command.hasSecondWord()){
             System.out.println("Unlock what?");
             return;
         } 
-        		        
+        
         currentRoom = map.get(player.getRoom());
-		Room chosenRoom = currentRoom.getExit((command.getSecondWord()));
+        Room chosenRoom = currentRoom.getExit((command.getSecondWord()));
         boolean isNeighbor = false;
-		boolean playerHasKey = false;
+        boolean playerHasKey = false;
         if (chosenRoom == null) {
             System.out.println("There's no room to unlock there!");
             return;
         } else if (! (chosenRoom instanceof LockedRoom)) {
-			System.out.println("This is not a locked room");
-			return;
+            System.out.println("This is not a locked room");
+            return;
         }
 
-		LockedRoom lockedRoom = (LockedRoom)chosenRoom;
+        LockedRoom lockedRoom = (LockedRoom)chosenRoom;
         isNeighbor = true;
-		String keyNeeded = lockedRoom.getKey();
+        String keyNeeded = lockedRoom.getKey();
         playerHasKey = player.has(keyNeeded);
-		
-		if (isNeighbor && playerHasKey){
-			if (!locking){System.out.println(lockedRoom.unlock());
-			} else {System.out.println(lockedRoom.lock());}
-		}
+        
+        if (isNeighbor && playerHasKey){
+            if (!locking){System.out.println(lockedRoom.unlock());
+            } else {System.out.println(lockedRoom.lock());}
+        }
     }
     
+    /**
+     * Puts the given characters into a fight scene
+     * @param Player the main character, Command contains the player to fight
+     */
+    private void fight(Player player, Command command){
+        if (!command.hasSecondWord()){
+            System.out.println("Fight who?");
+            return;
+        }
+        
+        String opponentName = command.getSecondWord();
+        NPC opponent = (NPC)characters.get(opponentName);
+        if (characters.get(opponentName) == null) {
+            System.out.println("You cannot fight \"" + opponentName + "\" here.");
+            return;
+        } else if (opponent != player){
+            triggerFight(player, opponent);
+        }
+    }
     
     /**
-     * Moves each NPC in the Map into an adjacent room
+     * Checks whether the hero has encountered a killer and triggers a fight if so.
+     * @param Player being controlled
+     */
+    private void checkFightTrigger(Player player){
+        String playerRoom = player.getRoom();
+        for (String name : characters.keySet()){
+            Player character = characters.get(name);
+            if (character instanceof NPC) {
+                // This accounts for the character being the hero (a Player)
+                NPC opponent = (NPC)character;
+                boolean inSameRoom = playerRoom.equals(opponent.getRoom());
+                if (inSameRoom && opponent.isAggro()) {triggerFight(player, opponent);}
+            }
+        }
+    }
+    
+    /**
+     * Triggers fight with the two parameters given. Usually the Player and NPC
+     * @Param Player the hero/MC, NPC the villain or interactable friendly
+     */
+    private void triggerFight(Player player, NPC opponent){
+        Minigame fightScene = new Minigame();
+        fightScene.killerEncounter();
+    }
+    
+    /**
+     * Moves each NPC in the Map into an adjacent room if it is available
      */
     private void moveNPC(){
         // Going to make this choice random eventually
@@ -293,12 +352,30 @@ public class Game
         String randomDirection = exits[rng.nextInt(exits.length)];
         
         Room nextRoom = currentRoom.getExit(randomDirection);
-        villain.setRoom(nextRoom.getTitle());
+        if (nextRoom.meetsRequirements()) {
+            villain.setRoom(nextRoom.getTitle());
+        } else {
+            // Villain can't get in room and is yelling
+            System.out.println("You hear someone yelling in frustration somewhere nearby.");
+        }
+        
+        // For testing, shows where villain is
         System.out.println("Villain is in " + villain.getRoom());
         // If we need to reset current room, this next line will do so
         //currentRoom = map.get(hero.getRoom());
     }
     
+    /**
+     * Makes the characters involved in the game
+     * This includes the hero and villain, but can have side characters as well.
+     */
+    private void makeCharacters(){
+        hero = new Player("Hero", "Patient Care");
+        villain = new NPC("Villain", "Basement", true);
+        
+        characters.put(hero.getName(), hero);
+        characters.put(villain.getName(), hero);
+    }    
     
     /**
      * Creates rooms and items, then sets up the exits for each room and stores the items

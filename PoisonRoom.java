@@ -5,7 +5,7 @@
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class PoisonRoom
+public class PoisonRoom extends Room
 {
     // instance variables - replace the example below with your own
     private int x;
@@ -15,8 +15,7 @@ public class PoisonRoom
      */
     public PoisonRoom()
     {
-        // initialise instance variables
-        x = 0;
+        super("Hazardous Material Room", "This room is glowing with radiation, it's best not to stay here too long.");
     }
 
     /**

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Player
 {
-    // instance variables - replace the example below with your own
+    // instance variables
     private String name;
     private String currentRoom;
     private int health;
@@ -21,6 +21,7 @@ public class Player
 
     /**
      * Constructor for objects of class Player
+     * @param String player's name, String name of starting room
      */
     public Player(String name, String roomName){
         this.name = name;
@@ -32,6 +33,14 @@ public class Player
         bag = new HashMap<>();
     }
 
+    /**
+     * Gets the name of the player
+     * @Return String player name
+     */
+    public String getName(){
+        return name;
+    }
+    
     /**
      * Gets current room name
      * @return String title of current room
@@ -89,18 +98,39 @@ public class Player
         }
         return (weightLimit - totalWeightCarried);
     }
-        
+    
+    /**
+     * Determines if player has a item in their bag
+     * @return boolean does or doesn't have item
+     */
     public boolean has(String itemName){
         return (bag.get(itemName) != null);
     }
     
+    /**
+     * Makes a reference to item object inside of player's inventory
+     * @param Item that is being added to bag
+     */
     public void addItem(Item item){
         bag.put(item.getName(), item);
     }
     
+    /**
+     * Returns and removes the desired item from the player's bag
+     * This gives the object removed so it can be stored in the current room
+     * @return Item to be stored or destroyed
+     */
     public Item drop(String itemName){
         Item chosenItem = bag.get(itemName);
         bag.remove(itemName);
         return chosenItem;
+    }
+    
+    /**
+     * Choose an item to use as a weapon if it is a weapon
+     * @return String status of equip
+     */
+    public String equipWeapon(String itemName){    
+        return "You have equiped " + itemName;
     }
 }
