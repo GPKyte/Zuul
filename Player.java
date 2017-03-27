@@ -14,6 +14,7 @@ public class Player
     private String name;
     private String currentRoom;
     private int health;
+    private boolean hidden;
     private ArrayList<String> roomHistory;
     private HashMap<String, Item> bag;
     private Item myWeapon;
@@ -28,6 +29,7 @@ public class Player
         currentRoom = roomName;
         health = 100;
         weightLimit = 100.00;
+        hidden = false;
         myWeapon = null;
         roomHistory = new ArrayList<>();
         bag = new HashMap<>();
@@ -124,6 +126,24 @@ public class Player
         Item chosenItem = bag.get(itemName);
         bag.remove(itemName);
         return chosenItem;
+    }
+    
+    /**
+     * Hides the player.
+     * @return String hidden status
+     */
+    public String hide(){
+        hidden = true;
+        return " is hiding";
+    }
+    
+    /**
+     * Player comes out of hiding.
+     * @return String hidden status
+     */
+    public String unhide(){
+        hidden = false;
+        return " no longer hidden.";
     }
     
     /**

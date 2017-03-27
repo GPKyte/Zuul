@@ -1,32 +1,30 @@
 
 /**
- * Write a description of class weapon here.
+ * A specific type of item that can be used during battle.
+ * It must be equiped, but otherwise is stored normally.
  * 
- * @author (your name) 
+ * @author Gavin Kyte and Aaron Chauvette
  * @version (a version number or a date)
  */
 public class weapon extends Item
 {
     // instance variables - replace the example below with your own
-    private float power;
+    private double power;
 
     /**
-     * Constructor for objects of class weapon
+     * Creates a weapon
      */
-    public weapon(String name,float weight,float power,boolean canTake)
+    public weapon(String name, double weight, boolean canTake, double power)
     {
         super(name,weight,canTake);
         this.power = power;
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
+     * Gets power of weapon
+     * @return double power modifier of weapon
      */
-    public float getPower()
-    {
+    public double getPower(){
         return power;
     }
 }

@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.params=
-comment0.target=Minigame()
+comment0.target=FightScene()
 comment0.text=\r\n\ Constructor\ for\ Minigame\r\n
 comment1.params=
 comment1.target=float\ playerDamage()

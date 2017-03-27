@@ -1,12 +1,13 @@
 import java.util.Random;
 import java.util.Scanner;
 /**
- * Write a description of class Minigame here.
+ * FightScene is a type of minigame or scene that displays a conflict event separate from Game
+ * The losing player is killed or game ends if the player is killed
  * 
  * @author Aaron Chauvette
  * @version 3/22/17
  */
-public class Minigame
+public class FightScene
 {
     // instance variables - replace the example below with your own
     private Random rng;
@@ -20,7 +21,7 @@ public class Minigame
     /**
      * Constructor for Minigame
      */
-    public Minigame()
+    public FightScene()
     {
         playerHealth = 10;
         killerHealth = 10;
