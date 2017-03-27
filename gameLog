@@ -170,3 +170,47 @@ Side note: can add a method to Room called addScene, that would allow for variab
 
 9:21 
 	Resolving changes on github was a pain. Added some room details.
+
+11:09
+	Added functionality to interact with items.
+	Getting null pointer exception, exploring why.
+
+11:54
+	The Item class works, can pick up and put down objects now. Adding safeguards.
+
+12:48
+	We won the basketball game!
+
+1:43 AM 3/24/2017
+	Commited to GitHub, improved interaction with items between room and player.
+	One of the next goals is to have notifications about the location of the NPC.
+	Then I'd like to trigger the fighting minigame that Aaron put together.
+	We'll then need to create the weapons class and at that point it will be important
+	continue storyboarding and get that sorted out.
+
+2:00 PM 3/24/2017
+	Want to add in minigame.
+	Want to specialize rooms. (Should use casting)
+
+	Looking at implementation of minigame before discussing with Aaron to use it correctly.
+
+3:13 PM 3/26/2017
+	Adding restrictions to player's carry limit.
+
+5:10
+	Have been working on Room specialization and have realized that the parser may need to be
+	more advanced to get multiple words as the name of an item (Want to say "Office key")
+	That or Player needs to have a way of comparing items with room. Which could be returning an item
+	or taking an item as input and return its .equals()
+
+7:03
+	Back from eating food
+	The room's needed key is taken as a string and the player's bag is searched for the key name.
+	Now we need to change the parser to understand more and take multi-word items.
+
+7:23
+	Editing unlock()
+
+8:09
+	Something to note, the lock/unlock feature doesn't lock a door persay, but rather the entire room.
+	

@@ -1,8 +1,12 @@
 #BlueJ class context
-comment0.params=name\ room
-comment0.target=NPC(java.lang.String,\ java.lang.String)
+comment0.params=name\ room\ isAggro
+comment0.target=NPC(java.lang.String,\ java.lang.String,\ boolean)
 comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ NPC\r\n
 comment1.params=
-comment1.target=void\ fight()
-comment1.text=\r\n\ Possible\ trigger\ for\ fighting\ minigame\r\n\r\n\ @param\ \r\n\ @return\ \r\n
-numComments=2
+comment1.target=double\ getHealth()
+comment2.params=damage
+comment2.target=void\ damageNPC(double)
+comment3.params=
+comment3.target=boolean\ isAggro()
+comment3.text=\r\n\ Tells\ if\ the\ NPC\ will\ attack\ on\ sight\ or\ not\r\n\ @return\ boolean\ will\ attack\r\n
+numComments=4

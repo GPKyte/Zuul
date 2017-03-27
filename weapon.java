@@ -13,9 +13,9 @@ public class weapon extends Item
     /**
      * Constructor for objects of class weapon
      */
-    public weapon(String name,double weight,double power,boolean canTake)
+    public weapon(String name,double weight,double power,boolean canTake, String description)
     {
-        super(name,weight,canTake);
+        super(name,weight,canTake,description);
         this.power = power;
     }
 

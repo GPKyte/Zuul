@@ -153,5 +153,19 @@ public class Room
         itemList.remove(itemName);
         return chosenItem;
     }
+    
+    public Item getItem(String itemName){
+        Item item = null;
+        if (contains(itemName)) {item = itemList.get(itemName);}
+        return item;
+    }
+    
+    public boolean meetsRequirements(){
+        return true;
+    }
+    
+    public String getRequirements(){
+        return "This room has no requirements or isn't fully implemented. You should not see this message";
+    }
 }
 

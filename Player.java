@@ -3,31 +3,44 @@ import java.util.Set;
 import java.util.ArrayList;
 
 /**
- * Write a description of class Player here.
+ * The player is able to hold items, "go" to different rooms and fight other players
  * 
  * @author Gavin Kyte and Aaron Chauvette
  * @version 2017.3.23
  */
 public class Player
 {
-    // instance variables - replace the example below with your own
+    // instance variables
     private String name;
     private String currentRoom;
-    private int health;
+    private double health;
     private ArrayList<String> roomHistory;
     private HashMap<String, Item> bag;
+    private Item myWeapon;
+    private double weightLimit;
 
     /**
      * Constructor for objects of class Player
+     * @param String player's name, String name of starting room
      */
     public Player(String name, String roomName){
         this.name = name;
         currentRoom = roomName;
         health = 100;
+        weightLimit = 100.00;
+        myWeapon = null;
         roomHistory = new ArrayList<>();
         bag = new HashMap<>();
     }
 
+    /**
+     * Gets the name of the player
+     * @Return String player name
+     */
+    public String getName(){
+        return name;
+    }
+    
     /**
      * Gets current room name
      * @return String title of current room
@@ -73,17 +86,57 @@ public class Player
         return bagContents;
     }
     
+    /**
+     * Gets the weight limit for this player. This is how much more can be carried,
+     * rather than the total. So that we can check new items before adding them.
+     * @return double with remaining carry limit
+     */
+    public double getWeightLimit(){
+        double totalWeightCarried = 0;
+        for (Item i : bag.values()){
+            totalWeightCarried += bag.get(i).getWeight();
+        }
+        return (weightLimit - totalWeightCarried);
+    }
+    
+    public double getHealth(){
+        return health;
+    }
+    public void damagePlayer(double damage){
+        health -= damage;
+    }
+    /**
+     * Determines if player has a item in their bag
+     * @return boolean does or doesn't have item
+     */
     public boolean has(String itemName){
         return (bag.get(itemName) != null);
     }
     
+    /**
+     * Makes a reference to item object inside of player's inventory
+     * @param Item that is being added to bag
+     */
     public void addItem(Item item){
         bag.put(item.getName(), item);
     }
     
+    /**
+     * Returns and removes the desired item from the player's bag
+     * This gives the object removed so it can be stored in the current room
+     * @return Item to be stored or destroyed
+     */
     public Item drop(String itemName){
         Item chosenItem = bag.get(itemName);
         bag.remove(itemName);
         return chosenItem;
+    }
+    
+    /**
+     * Choose an item to use as a weapon if it is a weapon
+     * @return String status of equip
+     */
+    public String equipWeapon(String itemName){    
+        return "You have equiped " + itemName;
     }
 }
