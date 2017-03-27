@@ -46,7 +46,6 @@ public class Game
      */
     public void play(){            
         printWelcome();
-
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
                 
@@ -90,9 +89,11 @@ public class Game
                 break;
             case "go":
                 goRoom(command);
+                moveNPC();
                 break;
             case "back":
                 goBack(hero);
+                moveNPC();
                 break;
             case "take":
                 pickUp(hero, command);
@@ -106,6 +107,12 @@ public class Game
             case "inventory":
                 System.out.println(hero.getInventory());
                 break;
+			case "unlock":
+				changeLockTo(hero, command, false);
+				break;
+			case "lock":
+				changeLockTo(hero, command, true);
+				break;
             case "quit":
                 wantToQuit = quit(command);
                 break;
@@ -168,14 +175,21 @@ public class Game
         // Try to leave current room.
         currentRoom = map.get(hero.getRoom());
         Room nextRoom = currentRoom.getExit(direction);
-
+        
+        // Casting room as correct type
+        if (nextRoom instanceof LockedRoom) { nextRoom = (LockedRoom)nextRoom;}        
+        
+        
+        
         if (nextRoom == null) {
             System.out.println("There is no door!");
-        } else {
+        } else if (nextRoom.meetsRequirements()) {
             currentRoom = nextRoom;
             hero.setRoom(currentRoom.getTitle());
             System.out.println(currentRoom.getLongDescription());
-            moveNPC();
+        } else {
+            System.out.println("You cannot enter this room");
+            System.out.println(currentRoom.getRequirements());
         }
     }
     
@@ -184,8 +198,7 @@ public class Game
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
      */
-    private boolean quit(Command command) 
-    {
+    private boolean quit(Command command){
         if(command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
@@ -237,6 +250,39 @@ public class Game
     }
     
     /**
+     * Unlocks room if it needs to be unlocked and next to player
+     */
+    private void changeLockTo(Player player, Command command, boolean locking){
+        if (!command.hasSecondWord()){
+            System.out.println("Unlock what?");
+            return;
+        } 
+        		        
+        currentRoom = map.get(player.getRoom());
+		Room chosenRoom = currentRoom.getExit((command.getSecondWord()));
+        boolean isNeighbor = false;
+		boolean playerHasKey = false;
+        if (chosenRoom == null) {
+            System.out.println("There's no room to unlock there!");
+            return;
+        } else if (! (chosenRoom instanceof LockedRoom)) {
+			System.out.println("This is not a locked room");
+			return;
+        }
+
+		LockedRoom lockedRoom = (LockedRoom)chosenRoom;
+        isNeighbor = true;
+		String keyNeeded = lockedRoom.getKey();
+        playerHasKey = player.has(keyNeeded);
+		
+		if (isNeighbor && playerHasKey){
+			if (!locking){System.out.println(lockedRoom.unlock());
+			} else {System.out.println(lockedRoom.lock());}
+		}
+    }
+    
+    
+    /**
      * Moves each NPC in the Map into an adjacent room
      */
     private void moveNPC(){
@@ -266,18 +312,19 @@ public class Game
             + "and boxes scattered about.");
         cafe = new Room("Cafe", "A open space filled with tables and surrounded\n" 
             + "with boothes that once served food. You smell something rancid.");
-        office = new Room("Office", "A small space with file cabinets lining the back wall,\n" 
-            + "there is a desk to your right.");
+        office = new LockedRoom("Office", "A small space with file cabinets lining the back wall,\n" 
+            + "there is a desk to your right.", true);
         bathroom = new Room("Bathroom", "A pristine white room that reeks of bleach.\n"
             + "All of the stalls are closed except one in the middle");
         middleStall = new Room("Bathroom Stall", "A dead body is slumped over in the stall.\n"
             + "At his feet is an open jug of bleach. He does not appear to be breathing.");
         
         // Creating Items
-        Item officeKey, bleach;
-        officeKey = new Item("key", 0, true);
-        bleach = new Item("bleach", 4, true);
-                    
+        Item officeKey, bleach, bigRock;
+        officeKey = new Item("key", 0.1, true);
+        bleach = new Item("bleach", 12.00, true);
+        bigRock = new Item("rock", 99.00, true);
+                            
         // Setting up exits and items between rooms:        
         // Patient Care
         patientCare.setExit("west", cafe);
@@ -296,6 +343,8 @@ public class Game
         // Basment
         basement.setExit("up", cafe);
         basement.store(officeKey);
+        basement.store(bigRock);
+        
         
         // Adding rooms to map
         Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall};

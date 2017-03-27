@@ -16,7 +16,7 @@ public class Item
     /**
      * Constructor for objects of class Item
      */
-    public Item(String name, float weight, boolean canTake)
+    public Item(String name, double weight, boolean canTake)
     {
         this.name = name;
         this.weight = weight;

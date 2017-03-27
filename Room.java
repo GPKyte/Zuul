@@ -159,5 +159,13 @@ public class Room
         if (contains(itemName)) {item = itemList.get(itemName);}
         return item;
     }
+    
+    public boolean meetsRequirements(){
+        return true;
+    }
+    
+    public String getRequirements(){
+        return "This room has no requirements or isn't fully implemented. You should not see this message";
+    }
 }
 

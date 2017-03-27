@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.params=title\ description\ isLocked
+comment0.target=LockedRoom(java.lang.String,\ java.lang.String,\ boolean)
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ LockedRoom\r\n
+comment1.params=
+comment1.target=boolean\ meetsRequirements()
+comment2.params=
+comment2.target=java.lang.String\ getRequirements()
+comment3.params=
+comment3.target=java.lang.String\ unlock()
+comment3.text=\r\n\ Unlocks\ the\ room\ if\ the\ player\ is\ holding\ the\ key\ object\r\n\ that\ has\ been\ linked\ to\ this\ room.\r\n\ @return\ String\ with\ lock\ status\ of\ room\r\n
+comment4.params=
+comment4.target=java.lang.String\ lock()
+comment4.text=\r\n\ Locks\ the\ room\ if\ the\ player\ is\ holding\ the\ key\ object\r\n\ that\ has\ been\ linked\ to\ this\ room.\r\n\ @return\ String\ with\ lock\ status\ of\ room\r\n
+comment5.params=key
+comment5.target=void\ setKey(Item)
+comment6.params=
+comment6.target=java.lang.String\ getKey()
+comment7.params=newReqs
+comment7.target=void\ setRequirements(java.lang.String)
+numComments=8
