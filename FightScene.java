@@ -11,11 +11,9 @@ public class FightScene
 {
     // instance variables - replace the example below with your own
     private Random rng;
-    private float playerHealth;
-    private float killerHealth;
     private Scanner reader;
-    private float playerPower;
-    private float killerPower;
+    private double playerPower;
+    private double killerPower;
     
 
     /**
@@ -23,18 +21,16 @@ public class FightScene
      */
     public FightScene()
     {
-        playerHealth = 10;
-        killerHealth = 10;
         playerPower = 3;
         killerPower = 3;
         rng = new Random();
         reader = new Scanner(System.in);
     }
-    public float playerDamage(){// Calculates how much damage the killer will take.
-        return playerPower * (playerHealth/10);
+    public double playerDamage(Player hero){// Calculates how much damage the killer will take.
+        return playerPower * (hero.getHealth()/10);
     }
-    public float killerDamage(){// Calculates how much damage the player will take.
-        return killerPower * (killerHealth/10);
+    public double killerDamage(NPC villain){// Calculates how much damage the player will take.
+        return killerPower * (villain.getHealth()/10);
     }
     public int killerTurn()//Decides the killer's move.
     {
@@ -69,7 +65,7 @@ public class FightScene
         }
         return playerMove;
     }
-    public void gameTurn()//outcome of turn.
+    public void gameTurn(Player hero, NPC villain)//outcome of turn.
     {
         int user = playerTurn();
         int killer = killerTurn();
@@ -80,67 +76,67 @@ public class FightScene
             }
             else if(user == 2){
                 System.out.println("You block the attack and land a counter-attack.");
-                killerHealth -= playerDamage();
+                villain.takeDamage(playerDamage(hero));
             }
             else if(user == 3){
                 System.out.println("The killer catches you off guard and strikes you.");
-                playerHealth -= killerDamage();
+                hero.takeDamage(killerDamage(villain));
             }
             else if(user == 4){
-                System.out.println("You parry the killer's strike and they stumble. You sweep the killer's leg and make a critical strike");
-                killerHealth -= 2 * playerDamage();
+                System.out.println("You parry the killer's strike and they stumble. You sweep the killer's legs and land a critical strike");
+                villain.takeDamage(playerDamage(hero));
             }
         }
         else if(killer == 1){
             System.out.println("The killer tries to block.");
             if(user == 1){
                 System.out.println("The killer blocks your strike and counters it.");
-                playerHealth -= killerDamage();
+                hero.takeDamage(killerDamage(villain));
             }
             else if(user == 2){
                 System.out.println("Neither of you move.");
             }
             else if(user == 3){
                 System.out.println("The killer is caught off guard by your bluff and you land a strike.");
-                killerHealth -= playerDamage();
+                villain.takeDamage(playerDamage(hero));
             }
             else if(user == 4){
                 System.out.println("The killer strikes you.");
-                playerHealth -= killerDamage();
+                hero.takeDamage(killerDamage(villain));
             }
         }
         else if(killer == 2){
             System.out.println("The killer attempts to feint.");
             if(user == 1){
                 System.out.println("The killer is caught off guard by your strike.");
-                killerHealth -= playerDamage();
+                villain.takeDamage(playerDamage(hero));
             }
             else if(user == 2){
                 System.out.println("You fall for the killer's bluff and take a hit.");
-                playerHealth -= killerDamage();
+                hero.takeDamage(killerDamage(villain));
             }
             else if(user == 3){
                 System.out.println("Neither of your bluffs succeed.");
             }
             else if(user == 4){
                 System.out.println("The killer strikes you.");
-                playerHealth -= killerDamage();
+                hero.takeDamage(killerDamage(villain));
             }
         }
 
     }
-    public void killerEncounter()//Starts the minigame.
+    public void killerEncounter(Player hero, NPC villain)//Starts the minigame.
     {
         boolean fight = true;
         System.out.println("A wild killer appears!");
         while(fight){
-            gameTurn();
-            System.out.println("Your Health: " + playerHealth + "  Killer's Health: " + killerHealth);
-            if(playerHealth <= 0){
+            gameTurn(hero, villain);
+            System.out.println("Your Health: " + hero.getHealth() + "  Killer's Health: " + villain.getHealth());
+            if(hero.getHealth() <= 0){
                 System.out.println("You died.");
                 fight = false;
             }
-            else if(killerHealth <= 0){
+            else if(villain.getHealth() <= 0){
                 System.out.println("You defeated the wild killer!");
                 fight = false;
             }

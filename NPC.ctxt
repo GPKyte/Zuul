@@ -5,4 +5,6 @@ comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ NPC\r\n
 comment1.params=
 comment1.target=boolean\ isAggro()
 comment1.text=\r\n\ Tells\ if\ the\ NPC\ will\ attack\ on\ sight\ or\ not\r\n\ @return\ boolean\ will\ attack\r\n
-numComments=2
+comment2.params=damage
+comment2.target=void\ takeDamage(double)
+numComments=3
