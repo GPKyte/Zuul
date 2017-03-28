@@ -213,4 +213,16 @@ Side note: can add a method to Room called addScene, that would allow for variab
 
 8:09
 	Something to note, the lock/unlock feature doesn't lock a door persay, but rather the entire room.
-	
+
+10:30
+	Discussed map and room map. Sorted out the main events in the story for our game.
+
+	We have a schizophrenic killer that wakes up in a hospital unaware of his killer background. He
+	sees that people have died in the hospital so his goal is to escape the hospital and get to safety.	
+	to do that he must get keys to certain rooms and turn on the power to unlock the doors. In the process
+	he will find out who he is and his condition. When he escapes, he will be captured by the police
+	and will realize that he is the killer and the truth behind descriptions during the game.
+	(Ignoring pronoun inclusiveness for those who care)
+
+11:49
+	Going to edit the description files for the project to reflect our contributions.
