@@ -1,39 +1,40 @@
 import java.util.Random;
 import java.util.Scanner;
 /**
- * Write a description of class Minigame here.
+ * FightScene is a type of minigame or scene that displays a conflict event separate from Game
+ * The losing player is killed or game ends if the player is killed
  * 
  * @author Aaron Chauvette
  * @version 3/22/17
  */
-public class Minigame
+public class FightScene
 {
     // instance variables - replace the example below with your own
     private Random rng;
-    private double playerHealth;
-    private double killerHealth;
+    private float playerHealth;
+    private float killerHealth;
     private Scanner reader;
-    private double playerPower;
-    private double killerPower;
+    private float playerPower;
+    private float killerPower;
     
 
     /**
      * Constructor for Minigame
      */
-    public Minigame(Player hero, NPC villain)
+    public FightScene()
     {
-        playerHealth = hero.getHealth();
-        killerHealth = villain.getHealth();
+        playerHealth = 10;
+        killerHealth = 10;
         playerPower = 3;
         killerPower = 3;
         rng = new Random();
         reader = new Scanner(System.in);
     }
-    public double playerDamage(Player hero){// Calculates how much damage the killer will take.
-        return playerPower * (hero.getHealth()/10);
+    public float playerDamage(){// Calculates how much damage the killer will take.
+        return playerPower * (playerHealth/10);
     }
-    public double killerDamage(NPC villain){// Calculates how much damage the player will take.
-        return killerPower * (villain.getHealth()/10);
+    public float killerDamage(){// Calculates how much damage the player will take.
+        return killerPower * (killerHealth/10);
     }
     public int killerTurn()//Decides the killer's move.
     {
@@ -68,7 +69,7 @@ public class Minigame
         }
         return playerMove;
     }
-    public void gameTurn(Player hero, NPC villain)//outcome of turn.
+    public void gameTurn()//outcome of turn.
     {
         int user = playerTurn();
         int killer = killerTurn();
@@ -79,62 +80,62 @@ public class Minigame
             }
             else if(user == 2){
                 System.out.println("You block the attack and land a counter-attack.");
-                villain.damageNPC(playerDamage(hero));
+                killerHealth -= playerDamage();
             }
             else if(user == 3){
                 System.out.println("The killer catches you off guard and strikes you.");
-                hero.damagePlayer(killerDamage(villain));
+                playerHealth -= killerDamage();
             }
             else if(user == 4){
                 System.out.println("You parry the killer's strike and they stumble. You sweep the killer's leg and make a critical strike");
-                villain.damageNPC(2 * playerDamage(hero));
+                killerHealth -= 2 * playerDamage();
             }
         }
         else if(killer == 1){
             System.out.println("The killer tries to block.");
             if(user == 1){
                 System.out.println("The killer blocks your strike and counters it.");
-                hero.damagePlayer(killerDamage(villain));
+                playerHealth -= killerDamage();
             }
             else if(user == 2){
                 System.out.println("Neither of you move.");
             }
             else if(user == 3){
                 System.out.println("The killer is caught off guard by your bluff and you land a strike.");
-                villain.damageNPC(playerDamage(hero));
+                killerHealth -= playerDamage();
             }
             else if(user == 4){
                 System.out.println("The killer strikes you.");
-                hero.damagePlayer(killerDamage(villain));
+                playerHealth -= killerDamage();
             }
         }
         else if(killer == 2){
             System.out.println("The killer attempts to feint.");
             if(user == 1){
                 System.out.println("The killer is caught off guard by your strike.");
-                villain.damageNPC(playerDamage(hero));
+                killerHealth -= playerDamage();
             }
             else if(user == 2){
                 System.out.println("You fall for the killer's bluff and take a hit.");
-                hero.damagePlayer(killerDamage(villain));
+                playerHealth -= killerDamage();
             }
             else if(user == 3){
                 System.out.println("Neither of your bluffs succeed.");
             }
             else if(user == 4){
                 System.out.println("The killer strikes you.");
-                hero.damagePlayer(killerDamage(villain));
+                playerHealth -= killerDamage();
             }
         }
 
     }
-    public void fight(Player hero, NPC villain)//Starts the minigame.
+    public void killerEncounter()//Starts the minigame.
     {
         boolean fight = true;
         System.out.println("A wild killer appears!");
         while(fight){
-            gameTurn(hero,villain);
-            System.out.println("Your Health: " + hero.getHealth() + "  Killer's Health: " + villain.getHealth());
+            gameTurn();
+            System.out.println("Your Health: " + playerHealth + "  Killer's Health: " + killerHealth);
             if(playerHealth <= 0){
                 System.out.println("You died.");
                 fight = false;

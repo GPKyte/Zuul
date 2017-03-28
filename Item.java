@@ -9,22 +9,27 @@
 public class Item
 {
     // instance variables - replace the example below with your own
-    private String name;
+    private String name;    
+    private String description;
     private double weight;
     private boolean canTake;
-    private String description;
+
     /**
      * Constructor for objects of class Item
      */
-    public Item(String name, double weight, boolean canTake, String description)
+    public Item(String name, double weight, boolean canTake)
     {
         this.name = name;
+        this.description = "This item has no description.";
         this.weight = weight;
         this.canTake = canTake;
-        this.description = description;
     }
+    
     public String getName(){
         return name;
+    }
+    public String getDescription(){
+        return description;
     }
     public double getWeight(){
         return weight;
@@ -32,15 +37,13 @@ public class Item
     public boolean canTake(){
         return canTake;
     }
-    public String getDescription(){
-        return description;
-    }
-    public void updateItem(String name, double weight, boolean canTake, String description){
+    public void setName(String name){
         this.name = name;
+    }
+    public void setWeight(Double weight){
         this.weight = weight;
-        this.canTake = canTake;
+    }
+    public void setDescription(String description){
         this.description = description;
     }
-
-
 }

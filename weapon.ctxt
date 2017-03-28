@@ -1,8 +1,8 @@
 #BlueJ class context
-comment0.params=name\ weight\ power\ canTake\ description
-comment0.target=weapon(java.lang.String,\ double,\ double,\ boolean,\ java.lang.String)
-comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ weapon\r\n
+comment0.params=name\ weight\ canTake\ power
+comment0.target=weapon(java.lang.String,\ double,\ boolean,\ double)
+comment0.text=\r\n\ Creates\ a\ weapon\r\n
 comment1.params=
 comment1.target=double\ getPower()
-comment1.text=\r\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\r\n\ \r\n\ @param\ \ y\ \ \ a\ sample\ parameter\ for\ a\ method\r\n\ @return\ \ \ \ \ the\ sum\ of\ x\ and\ y\ \r\n
+comment1.text=\r\n\ Gets\ power\ of\ weapon\r\n\ @return\ double\ power\ modifier\ of\ weapon\r\n
 numComments=2

@@ -3,11 +3,14 @@ import java.util.Set;
 import java.util.Random;
 
 /**
- *  This class is the main class of the "World of Zuul" application. 
- *  "World of Zuul" is a very simple, text based adventure game.  Users 
- *  can walk around some scenery. That's all. It should really be extended 
- *  to make it more interesting!
- * 
+ *  This is the main class of Zuul, a test-based adventure game.
+ *  It is adapted from a basic version out of this book:
+ *  
+ *     Objects First with Java - A Practical Introduction using BlueJ
+ *     Sixth edition
+ *     David J. Barnes and Michael Kölling
+ *     Pearson Education, 2016
+ *  
  *  To play this game, create an instance of this class and call the "play"
  *  method.
  * 
@@ -16,7 +19,7 @@ import java.util.Random;
  *  executes the commands that the parser returns.
  * 
  * @author  Gavin Kyte and Aaron Chauvette
- * @version 2016.03.22
+ * @version 2017.3.27
  */
 
 public class Game 
@@ -110,12 +113,20 @@ public class Game
                 break;
             case "unlock":
                 changeLockTo(hero, command, false);
+                moveNPC();
                 break;
             case "lock":
                 changeLockTo(hero, command, true);
+                moveNPC();
+                break;
+            case "hide":
+                hide(hero);
+                moveNPC();
                 break;
             case "fight":
                 fight(hero, command);
+                // When fight determines GameOver, uncomment this:
+                // wantToQuit = fight(hero, command);
                 break;
             case "quit":
                 wantToQuit = quit(command);
@@ -128,7 +139,7 @@ public class Game
         return wantToQuit;
     }
     
-    // Defining Commands    
+    // Defining Commands
     /**
      * Returns player to the previous room. This means that if this
      * is called each turn, the player will alternate between two rooms
@@ -141,15 +152,13 @@ public class Game
     }
     
     /**
-     * Prints the current room's exits and items
+     * Prints the current room's exit directions and items contained
      */
     private void look(Player player){
         currentRoom = map.get(player.getRoom());
         System.out.println(currentRoom.look());
     }
     
-    
-    // implementations of user commands:
     /**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
@@ -194,6 +203,21 @@ public class Game
             System.out.println("You cannot enter this room");
             System.out.println(currentRoom.getRequirements());
         }
+    }
+    
+    /**
+     * Hides the player from the other characters. If the room supports hiding,
+     * the player won't get into a fight with them while they are hiding.
+     * Looking for a place to hide does let the NPC move though, so if the
+     * room doesn't have any place, the player may be found.
+     * @param Player usually main character
+     */
+    private void hide(Player player){
+        System.out.print(player.getName() + player.unhide());
+    }
+    
+    private void unhide(Player player){
+        System.out.println(player.getName() + player.unhide());
     }
     
     /** 
@@ -337,8 +361,8 @@ public class Game
      * @Param Player the hero/MC, NPC the villain or interactable friendly
      */
     private void triggerFight(Player player, NPC opponent){
-        Minigame fightScene = new Minigame();
-        fightScene.killerEncounter();
+        FightScene fight = new FightScene();
+        fight.killerEncounter();
     }
     
     /**
@@ -363,6 +387,7 @@ public class Game
         System.out.println("Villain is in " + villain.getRoom());
         // If we need to reset current room, this next line will do so
         //currentRoom = map.get(hero.getRoom());
+        checkFightTrigger(hero);
     }
     
     /**

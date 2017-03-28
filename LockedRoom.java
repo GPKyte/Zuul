@@ -1,6 +1,7 @@
 
 /**
- * Write a description of class LockedRoom here.
+ * A locked room needs a key of some sort to open it. It can be locked, unlocked,
+ * and inherits from the base Room class.
  * 
  * @author Gavin Kyte
  * @version 2017.3.26
@@ -24,7 +25,7 @@ public class LockedRoom extends Room
         return !isLocked;
     }
 
-        public String getRequirements(){
+    public String getRequirements(){
         return roomReqs;
     }
 
@@ -38,17 +39,17 @@ public class LockedRoom extends Room
         return "Room unlocked";
     }
 
-	/**
+    /**
      * Locks the room if the player is holding the key object
      * that has been linked to this room.
      * @return String with lock status of room
      */
-	public String lock(){
-		isLocked = true;
-		return "Room locked.";
+    public String lock(){
+        isLocked = true;
+        return "Room locked.";
     }
 
-	public void setKey(Item key){
+    public void setKey(Item key){
         this.keyToUnlock = key;
     }
     
