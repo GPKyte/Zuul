@@ -9,7 +9,7 @@
 public class LockedRoom extends Room
 {
     private boolean isLocked;
-    private Item keyToUnlock = null;
+    private String keyToUnlock = "key";
     private String roomReqs;
 
     /**
@@ -49,12 +49,12 @@ public class LockedRoom extends Room
         return "Room locked.";
     }
 
-    public void setKey(Item key){
+    public void setKey(String key){
         this.keyToUnlock = key;
     }
     
     public String getKey(){
-        return keyToUnlock.getName();
+        return keyToUnlock;
     }        
         
     public void setRequirements(String newReqs){

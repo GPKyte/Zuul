@@ -31,7 +31,7 @@ public class Game
     private HashMap<String, Room> map;
     private HashMap<String, Player> characters;
     private Player hero;
-    private Player villain;
+    private NPC villain;
     private Random rng;
     private Scanner scanner;
         
@@ -44,6 +44,7 @@ public class Game
         scanner = new Scanner(new BufferedReader(new FileReader("worldInit.txt"))).useDelimiter("\\n");
         //prepareRooms();
         makeCharacters();
+        initWorld();
         parser = new Parser();
         currentRoom = map.get(hero.getRoom());
         rng = new Random();
@@ -67,6 +68,7 @@ public class Game
                     // room _typeOfRoom_ _title_ _shortDescription_
                     String typeOfRoom = "room";
                     String title = "defaultTitle";
+                    String key = "key";
                     String description = "";                    
                     if (line.hasNext()){
                         typeOfRoom = line.next();                        
@@ -77,11 +79,17 @@ public class Game
                         title = line.next();
                     } else {
                         System.out.println("\"room\" command during init is missing a title");
-                    }                    
+                    }
+                    if ((typeOfRoom.equals("locked") || typeOfRoom.equals("unlocked")) && line.hasNext()){
+                        key = line.next();
+                    } else {
+                        // nothing should happen here
+                    }
                     while (line.hasNext()){
                         description += line.next() + " ";
-                    }                    
-                    Room r = createRoom(typeOfRoom, title, description);                    
+                    }
+                    
+                    Room r = createRoom(typeOfRoom, title, key, description);                    
                     if (map.get(r.getTitle()) == null) {
                         map.put(r.getTitle(), r);
                     } else {
@@ -105,8 +113,7 @@ public class Game
                         System.out.println("On command \"exit\" during init, the mainRoom is null.");
                         System.out.println("Not setting exits for " + roomName + " because it hasn't been created.");
                         break;
-                    }
-                    
+                    }                    
                     while (line.hasNext()){
                         String direction = line.next();
                         roomName = "DefaultExit";
@@ -205,7 +212,7 @@ public class Game
     /**
      * Casts room into correct type
      */
-    public Room createRoom(String type, String title, String description){
+    public Room createRoom(String type, String title, String key, String description){
         Room r = null;
         if (type.equals("locked")){
             r = new LockedRoom(title, description, true);
@@ -217,6 +224,7 @@ public class Game
         
         if (r instanceof LockedRoom){
             LockedRoom room = (LockedRoom)r;
+            room.setKey(key);
             return room;
         } else {
             return r;
@@ -411,9 +419,8 @@ public class Game
      * @param Player usually main character
      */
     private void hide(Player player){
-        System.out.print(player.getName() + player.unhide());
-    }
-    
+        System.out.println(player.getName() + player.hide());
+    }    
     private void unhide(Player player){
         System.out.println(player.getName() + player.unhide());
     }
@@ -427,8 +434,7 @@ public class Game
         if(command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
-        }
-        else {
+        } else {
             return true;  // signal that we want to quit
         }
     }
@@ -571,10 +577,13 @@ public class Game
         // DANGER!! This could be root of weird error down the line involving currentRoom
         currentRoom = map.get(villain.getRoom());
         String[] exits = currentRoom.getExitDirections();
-        String randomDirection = exits[rng.nextInt(exits.length)];
+        if (exits.length == 0) {System.out.println("Villain has been trapped"); return;}
+        
+        int choice = rng.nextInt(exits.length);
+        String randomDirection = exits[choice];
         
         Room nextRoom = currentRoom.getExit(randomDirection);
-        if (nextRoom.meetsRequirements()) {
+        if (nextRoom != null && nextRoom.meetsRequirements()) {
             villain.setRoom(nextRoom.getTitle());
         } else {
             // Villain can't get in room and is yelling
@@ -593,11 +602,11 @@ public class Game
      * This includes the hero and villain, but can have side characters as well.
      */
     private void makeCharacters(){
-        hero = new Player("Hero", "Patient Care");
+        hero = new Player("Hero", "Lobby");
         villain = new NPC("Villain", "Basement", true);
         
         characters.put(hero.getName(), hero);
-        characters.put(villain.getName(), hero);
+        characters.put(villain.getName(), villain);
     }    
     
     /**
@@ -649,11 +658,11 @@ public class Game
         fuseBox = new Item("fuse box", 9999, false);
         
         // Creating Weapons
-        weapon pipe, scaple, knife, peculiarBlade;
-        pipe = new weapon("pipe", 6.00, true, 25);
-        scaple = new weapon("scaple", .3, true, 15);
-        knife = new weapon("knife", 3, true, 35);
-        peculiarBlade = new weapon("peculiar blade", 10, true, 50);
+        Weapon pipe, scaple, knife, peculiarBlade;
+        pipe = new Weapon("pipe", 6.00, true, 25);
+        scaple = new Weapon("scaple", .3, true, 15);
+        knife = new Weapon("knife", 3, true, 35);
+        peculiarBlade = new Weapon("peculiar blade", 10, true, 50);
         
         
                             

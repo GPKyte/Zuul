@@ -1,21 +1,20 @@
 // format for room
 // room _type_ _name_ __description__
-
-room . office generic description
-room . lobby waiting room
-room . cafeteria a place to serve and eat food
-room locked basement a dark and damp place with air ducts and heating vents
-room . mainHall a large, white-tiled hallway that smell slightly of bleach
+room . Office generic description
+room . Lobby waiting room
+room . Cafeteria a place to serve and eat food
+room locked Basement bKey a dark and damp place with air ducts and heating vents
+room . MainHall a large, white-tiled hallway that smell slightly of bleach
 
 // format for exit
 // exit _mainRoom_ _direction_ _exitRoom_ [_direction_ _exitRoom_ ...]
-exit office east lobby
-exit lobby east cafeteria west office south mainHall
-exit mainHall north lobby west office down basement
-exit basement up mainHall
+exit Office east Lobby
+exit Lobby east Cafeteria west Office south MainHall
+exit MainHall north lobby west Office down Basement
+exit Basement up MainHall
 
 // format for add
 // add _type_ _name_ _weight_ _canTake_ <powerLevel> _destination_
-add . bleach 12.00 true mainHall
+add . bleach 12.00 true MainHall
 // weapons
-add weapon knife 3.50 true 2.00 cafeteria
+add weapon knife 3.50 true 2.00 Cafeteria
