@@ -6,7 +6,7 @@
  * @author Gavin Kyte and Aaron Chauvette
  * @version (a version number or a date)
  */
-public class weapon extends Item
+public class Weapon extends Item
 {
     // instance variables - replace the example below with your own
     private double power;
@@ -14,7 +14,7 @@ public class weapon extends Item
     /**
      * Creates a weapon
      */
-    public weapon(String name, double weight, boolean canTake, double power)
+    public Weapon(String name, double weight, boolean canTake, double power)
     {
         super(name,weight,canTake);
         this.power = power;

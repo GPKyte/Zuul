@@ -232,4 +232,7 @@ Side note: can add a method to Room called addScene, that would allow for variab
 	Learning more about GitHub because of that issue. Also looking into creating the game based on a file
 	and reading the input which should be fun. Think the book has something about this.
 
-
+12:45 PM 3/30/2017
+	Been working for about an hour now, the init file works, now I'm expanding it to have further safety checks
+	and account for more, i.e. special rooms and items.
+	THEN I think it'd be REALLY cool to test out a save / load game feature.

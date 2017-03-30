@@ -18,7 +18,7 @@ public class LockedRoom extends Room
     public LockedRoom(String title, String description, boolean isLocked){
         super(title, description);
         this.isLocked = isLocked;
-        roomReqs = "You need the " + keyToUnlock + "to unlock this room.";
+        roomReqs = "You need the " + keyToUnlock + " to unlock this room.";
     }
     
     public boolean meetsRequirements(){
