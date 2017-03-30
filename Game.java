@@ -362,7 +362,7 @@ public class Game
      */
     private void triggerFight(Player player, NPC opponent){
         FightScene fight = new FightScene();
-        fight.killerEncounter();
+        fight.killerEncounter(player, opponent);
     }
     
     /**

@@ -1,0 +1,25 @@
+D-Level
+	Several Rooms
+	Room can have at least 4 exits by name (typically cardinal directions)
+	Player can "walk" through locations
+	There are items in some rooms. 
+	Each room can hold any number of items.
+	Some items can be picked up, others cannot.
+
+C-Level
+	The player can carry items up to a certain weight
+	~~~ The player can win
+	The player can go "back" to the last visited room
+	There are several new commands. At least two of which take a second word.
+
+B-Level
+	~~~ Time limit
+	There are locked rooms
+	~~~ Magic transporter room
+
+A-Level
+	~ NPC villain the moves randomly (Need to include a chatter bot, and some other NPC)
+	~~~ Read the game setup from external file with error checking and output
+
+
+Z-Level

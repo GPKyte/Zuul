@@ -226,3 +226,10 @@ Side note: can add a method to Room called addScene, that would allow for variab
 
 11:49
 	Going to edit the description files for the project to reflect our contributions.
+
+4:21 PM 3/29/2017
+	Have recently fixed a large conflict between branches due to not working from the latest version.
+	Learning more about GitHub because of that issue. Also looking into creating the game based on a file
+	and reading the input which should be fun. Think the book has something about this.
+
+
