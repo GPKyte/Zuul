@@ -1,6 +1,8 @@
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Random;
+import java.io.*;
+import java.util.Scanner;
 
 /**
  *  This is the main class of Zuul, a test-based adventure game.
@@ -22,7 +24,7 @@ import java.util.Random;
  * @version 2017.3.27
  */
 
-public class Game 
+public class Game
 {
     private Parser parser;
     private Room currentRoom;
@@ -31,20 +33,216 @@ public class Game
     private Player hero;
     private Player villain;
     private Random rng;
+    private Scanner scanner;
         
     /**
      * Create the game and initialise its internal map.
      */
-    public Game(){
+    public Game() throws IOException {
         map = new HashMap<>();
         characters = new HashMap<>();
-        prepareRooms();
+        scanner = new Scanner(new BufferedReader(new FileReader("worldInit.txt"))).useDelimiter("\\n");
+        //prepareRooms();
         makeCharacters();
         parser = new Parser();
         currentRoom = map.get(hero.getRoom());
         rng = new Random();
     }
 
+    //Test
+    public void initWorld(){
+        while (scanner.hasNext()) {
+            String commandLine = scanner.next();
+            Scanner line = new Scanner(commandLine);
+            String command = "no command on line";
+            if (line.hasNext()) {
+                command = line.next();
+            }
+            
+            switch (command){
+                case "//":
+                    break;
+                case "room":
+                    // room command format
+                    // room _typeOfRoom_ _title_ _shortDescription_
+                    String typeOfRoom = "room";
+                    String title = "defaultTitle";
+                    String description = "";                    
+                    if (line.hasNext()){
+                        typeOfRoom = line.next();                        
+                    } else {
+                        System.out.println("\"room\" command during init is missing room type");
+                    }                    
+                    if (line.hasNext()){
+                        title = line.next();
+                    } else {
+                        System.out.println("\"room\" command during init is missing a title");
+                    }                    
+                    while (line.hasNext()){
+                        description += line.next() + " ";
+                    }                    
+                    Room r = createRoom(typeOfRoom, title, description);                    
+                    if (map.get(r.getTitle()) == null) {
+                        map.put(r.getTitle(), r);
+                    } else {
+                        System.out.println("Room already exists. Please remove the copy");
+                    }
+                    break;
+                    
+                case "exit":
+                    // format for exit command
+                    // exit _mainRoomName_ [_direction_ _roomName_ ...]
+                    String roomName = "Default";
+                    if (line.hasNext()) {
+                        roomName = line.next();
+                    } else {
+                        System.out.println("Unfinished command \"exit,\" please finish line and try again.");
+                        break;
+                    }
+                    
+                    Room mainRoom = map.get(roomName);
+                    if (mainRoom == null){
+                        System.out.println("On command \"exit\" during init, the mainRoom is null.");
+                        System.out.println("Not setting exits for " + roomName + " because it hasn't been created.");
+                        break;
+                    }
+                    
+                    while (line.hasNext()){
+                        String direction = line.next();
+                        roomName = "DefaultExit";
+                        if (line.hasNext()){
+                            roomName = line.next();
+                            Room exitRoom = map.get(roomName);
+                            if (roomName != null) {
+                                mainRoom.setExit(direction, exitRoom);
+                            } else {
+                                System.out.println("On command \"exit\" during init, exit room wasn't found.");
+                            }
+                        } else {
+                            System.out.println("On command \"exit\" during init, the exit room wasn't provided");
+                        }                        
+                    }                    
+                    break;
+                    
+                case "add":
+                    // add command format
+                    // add _type_ _name_ _weight_ _canTake_ _<powerLevel>_ _destination_
+                    String type = "item";
+                    String name = "defaultName";
+                    double weight = 0.00;
+                    boolean canTake = true;
+                    double powerLevel = 0.00;
+                    String destination = null;
+                    if (line.hasNext()){
+                        type = line.next();
+                    } else {
+                        System.out.println("\"add\" command during init is missing a type");
+                    }
+                    if (line.hasNext()){
+                        name = line.next();
+                    } else {
+                        System.out.println("\"add\" command during init is missing a name");
+                    }
+                    if (line.hasNextDouble()){
+                        weight = line.nextDouble();
+                    } else {
+                        System.out.println("\"add\" command during init is missing a double for weight");
+                    }
+                    if (line.hasNextBoolean()){
+                        canTake = line.nextBoolean();
+                    } else {
+                        System.out.println("\"add\" command during init is missing a boolean for canTake");
+                    }
+                    if (line.hasNextDouble() && type.equals("weapon")){
+                        powerLevel = line.nextDouble();
+                    } else {
+                        // nothing should happen here
+                    }
+                    if (line.hasNext()){
+                        destination = line.next();
+                    } else {
+                        System.out.println("\"add\" command during init is missing a destination name");
+                    }
+                    
+                    Item i = createItem(type, name, weight, canTake, powerLevel);
+                    if (map.get(destination) != null) {
+                        map.get(destination).store(i);
+                    } else {
+                        System.out.println(i.getName() + " cannot be stored because " + destination + "doesn't exist");
+                    }                    
+                    break;
+                    
+                case "no command on line":
+                    break;
+                    
+                default:
+                    System.out.println("Command not recognized in init file");
+                    break;
+            }
+        }
+    }
+    
+    /**
+     * Displays map and room items
+     */
+    public void displayMapFull(){
+        System.out.println("MAP");
+        System.out.println("-----------------------------");
+        for (Room r : map.values()){
+            String exits = "Exits: ";
+            for (String direction : r.getExitDirections()){
+                exits += direction + " ";
+            }
+            System.out.println("-----------------------------");
+            System.out.println(r.getTitle());
+            System.out.println("    " + exits);
+            System.out.println("    " + r.listItems());
+        }
+        System.out.println("-----------------------------");
+        System.out.println("-----------------------------");
+    }
+    
+    /**
+     * Casts room into correct type
+     */
+    public Room createRoom(String type, String title, String description){
+        Room r = null;
+        if (type.equals("locked")){
+            r = new LockedRoom(title, description, true);
+        } else if (type.equals("unlocked")){
+            r = new LockedRoom(title, description, false);
+        } else {
+            r = new Room(title, description);
+        }
+        
+        if (r instanceof LockedRoom){
+            LockedRoom room = (LockedRoom)r;
+            return room;
+        } else {
+            return r;
+        }
+    }
+    
+    /**
+     * Creates a specific type of item, necessary during init to avoid code duplication
+     * @param String type, String name, double weight, boolean canTake, double powerLevel
+     */
+    private Item createItem(String type, String name, double weight, boolean canTake, double powerLevel){
+        Item i = null;
+        if (type.equals("weapon")){
+            i = new Weapon(name, weight, canTake, powerLevel);
+        } else {
+            i = new Item(name, weight, canTake);
+        }
+        
+        if (i instanceof Weapon){
+            Weapon item = (Weapon)i;
+            return item;
+        } else {
+            return i;
+        }
+    }
+    
     /**
      *  Main play routine.  Loops until end of play.
      */

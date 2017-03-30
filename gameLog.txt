@@ -236,9 +236,3 @@ Side note: can add a method to Room called addScene, that would allow for variab
 	Been working for about an hour now, the init file works, now I'm expanding it to have further safety checks
 	and account for more, i.e. special rooms and items.
 	THEN I think it'd be REALLY cool to test out a save / load game feature.
-
-2:00 PM
-	Log out.
-
-4:45 PM
-	Noticed that the intialization becomes complicated when there are multiple types of rooms.

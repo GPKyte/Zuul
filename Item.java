@@ -9,8 +9,7 @@
 public class Item
 {
     // instance variables - replace the example below with your own
-    private String name;    
-    private String description;
+    private String name;
     private double weight;
     private boolean canTake;
 
@@ -20,16 +19,12 @@ public class Item
     public Item(String name, double weight, boolean canTake)
     {
         this.name = name;
-        this.description = "This item has no description.";
         this.weight = weight;
         this.canTake = canTake;
     }
     
     public String getName(){
         return name;
-    }
-    public String getDescription(){
-        return description;
     }
     public double getWeight(){
         return weight;
@@ -42,8 +37,5 @@ public class Item
     }
     public void setWeight(Double weight){
         this.weight = weight;
-    }
-    public void setDescription(String description){
-        this.description = description;
     }
 }
