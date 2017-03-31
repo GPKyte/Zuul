@@ -13,7 +13,7 @@ public class Player
     // instance variables
     private String name;
     private String currentRoom;
-    private int health;
+    private double health;
     private boolean hidden;
     private ArrayList<String> roomHistory;
     private HashMap<String, Item> bag;
@@ -33,6 +33,10 @@ public class Player
         myWeapon = null;
         roomHistory = new ArrayList<>();
         bag = new HashMap<>();
+    }
+    
+    public void takeDamage(double damage){
+        health -= damage;
     }
 
     /**
@@ -126,6 +130,10 @@ public class Player
         Item chosenItem = bag.get(itemName);
         bag.remove(itemName);
         return chosenItem;
+    }
+    
+    public double getHealth(){
+        return health;
     }
     
     /**

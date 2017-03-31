@@ -362,7 +362,7 @@ public class Game
      */
     private void triggerFight(Player player, NPC opponent){
         FightScene fight = new FightScene();
-        fight.killerEncounter();
+        fight.killerEncounter(player, opponent);
     }
     
     /**
@@ -407,25 +407,58 @@ public class Game
      */    
     private void prepareRooms(){
         // Creating rooms
-        Room patientCare, basement, cafe, office, bathroom, middleStall;
+        Room patientCare, basement, cafe, office, bathroom, middleStall, powerPlant, roof, breakRoom, elevator, mainOffice, ER, janitorCloset, kitchen, courtYard, giftShop, parkingLot, lobby, lab, XRay, hallway, stairs, mainEntrance;
         patientCare = new Room("Patient Care", "A room with curtains surrounding several beds.\n"
             + "The bed in the far corner has some sheets sticking out under the curtain.");
         basement = new Room("Basement", "A dusty cement enclosure with strange machines\n"
             + "and boxes scattered about.");
         cafe = new Room("Cafe", "A open space filled with tables and surrounded\n" 
-            + "with boothes that once served food. You smell something rancid.");
+            + "with booths that once served food. You smell something rancid.");
         office = new LockedRoom("Office", "A small space with file cabinets lining the back wall,\n" 
             + "there is a desk to your right.", true);
         bathroom = new Room("Bathroom", "A pristine white room that reeks of bleach.\n"
             + "All of the stalls are closed except one in the middle");
         middleStall = new Room("Bathroom Stall", "A dead body is slumped over in the stall.\n"
             + "At his feet is an open jug of bleach. He does not appear to be breathing.");
+        roof = new Room("Roof top", "description");
+        powerPlant = new Room("Power Plant", "description");
+        breakRoom = new Room("Break Room", "description");
+        elevator = new LockedRoom("Elevator", "description", true);
+        mainOffice = new Room("Main Office", "description");
+        ER = new Room("ER", "description");
+        janitorCloset = new Room("Janitor's Closet", "description");
+        courtYard = new Room("Court Yard", "description");
+        kitchen = new Room("Kitchen", "description");
+        giftShop = new Room("Gift Shop", "description");
+        parkingLot = new LockedRoom("Parking Lot", "description", true);
+        lobby = new Room("Lobby", "description");
+        lab = new Room("Lab", "description");
+        XRay = new Room("XRay room", "description");
+        hallway = new Room("Hallway", "description");
+        stairs = new Room("Stairs", "description");
+        mainEntrance = new Room("Main Entrance", "description");
         
         // Creating Items
-        Item officeKey, bleach, bigRock;
+        Item officeKey, cabinetKey, bleach, bigRock, keyCard, keg, fileCabinet, playerFile, fuseBox;
+        
         officeKey = new Item("key", 0.1, true);
         bleach = new Item("bleach", 12.00, true);
         bigRock = new Item("rock", 99.00, true);
+        keyCard = new Item("key card", .1, true);
+        keg = new Item("keg", 9999, false);
+        fileCabinet = new Item("file cabinet", 9999, false);
+        playerFile = new Item("Your file", 1, true);
+        fuseBox = new Item("fuse box", 9999, false);
+        cabinetKey = new Item("Cabinet Key", .1, true);
+        
+        // Creating Weapons
+        weapon pipe, scapel, knife, peculiarBlade;
+        pipe = new weapon("pipe", 6.00, true, 25);
+        scapel = new weapon("scapel", .3, true, 15);
+        knife = new weapon("knife", 3, true, 35);
+        peculiarBlade = new weapon("peculiar blade", 10, true, 50);
+        
+        
                             
         // Setting up exits and items between rooms:        
         // Patient Care
@@ -434,6 +467,7 @@ public class Game
         // Bathroom
         bathroom.setExit("north", patientCare);
         bathroom.setExit("east", middleStall);
+        bathroom.store(pipe);
         middleStall.setExit("west", bathroom);
         middleStall.store(bleach);
         // Cafe
@@ -447,9 +481,15 @@ public class Game
         basement.store(officeKey);
         basement.store(bigRock);
         
-        
+        // other
+        powerPlant.store(fuseBox);
+        kitchen.store(knife);
+        roof.store(peculiarBlade);
+        ER.store(scapel);
+        breakRoom.store(keyCard);
+        lab.store(cabinetKey);
         // Adding rooms to map
-        Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall};
+        Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall, powerPlant, roof, breakRoom, elevator, mainOffice, ER, janitorCloset, kitchen, courtYard, giftShop, parkingLot, lobby, lab, XRay, hallway, stairs, mainEntrance};
         for (Room room : rooms){
             map.put(room.getTitle(), room);
         }
