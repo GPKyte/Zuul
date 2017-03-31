@@ -244,7 +244,7 @@ public class Game
         // Not sure when this is triggered or when it will meet the right conditions
         return true;
     }
-    
+
     /**
      * Picks up an item. I.e. removes it from a the current room if it exists and adds
      * it to the player's inventory.

@@ -128,18 +128,21 @@ public class FightScene
     public void killerEncounter(Player hero, NPC villain)//Starts the minigame.
     {
         boolean fight = true;
+        boolean wonFight = false;
         System.out.println("A wild killer appears!");
         while(fight){
             gameTurn(hero, villain);
             System.out.println("Your Health: " + hero.getHealth() + "  Killer's Health: " + villain.getHealth());
             if(hero.getHealth() <= 0){
                 System.out.println("You died.");
+                wonFight = false;
                 fight = false;
             }
             else if(villain.getHealth() <= 0){
                 System.out.println("You defeated the wild killer!");
+                wonFight = true;
                 fight = false;
             }
-        }
+        } 
     }
 }
