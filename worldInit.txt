@@ -1,5 +1,5 @@
 // format for room
-// room _type_ _name_ __description__
+// room _type_ _name_ <key>__description__
 room . Office generic description
 room . Lobby waiting room
 room . Cafeteria a place to serve and eat food
