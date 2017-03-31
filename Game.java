@@ -656,7 +656,6 @@ public class Game
         fileCabinet = new Item("file cabinet", 9999, false);
         playerFile = new Item("Your file", 1, true);
         fuseBox = new Item("fuse box", 9999, false);
-<<<<<<< HEAD
         
         // Creating Weapons
         Weapon pipe, scaple, knife, peculiarBlade;
@@ -691,9 +690,7 @@ public class Game
         powerPlant.store(fuseBox);
         kitchen.store(knife);
         roof.store(peculiarBlade);
-        ER.store(scapel);
         breakRoom.store(keyCard);
-        lab.store(cabinetKey);
         // Adding rooms to map
         Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall, powerPlant, roof, breakRoom, elevator, mainOffice, ER, janitorCloset, kitchen, courtYard, giftShop, parkingLot, lobby, lab, XRay, hallway, stairs, mainEntrance};
         for (Room room : rooms){
