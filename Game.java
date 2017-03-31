@@ -439,7 +439,7 @@ public class Game
         mainEntrance = new Room("Main Entrance", "description");
         
         // Creating Items
-        Item officeKey, bleach, bigRock, keyCard, keg, fileCabinet, playerFile, fuseBox;
+        Item officeKey, cabinetKey, bleach, bigRock, keyCard, keg, fileCabinet, playerFile, fuseBox;
         
         officeKey = new Item("key", 0.1, true);
         bleach = new Item("bleach", 12.00, true);
@@ -449,11 +449,12 @@ public class Game
         fileCabinet = new Item("file cabinet", 9999, false);
         playerFile = new Item("Your file", 1, true);
         fuseBox = new Item("fuse box", 9999, false);
+        cabinetKey = new Item("Cabinet Key", .1, true);
         
         // Creating Weapons
-        weapon pipe, scaple, knife, peculiarBlade;
+        weapon pipe, scapel, knife, peculiarBlade;
         pipe = new weapon("pipe", 6.00, true, 25);
-        scaple = new weapon("scaple", .3, true, 15);
+        scapel = new weapon("scapel", .3, true, 15);
         knife = new weapon("knife", 3, true, 35);
         peculiarBlade = new weapon("peculiar blade", 10, true, 50);
         
@@ -466,6 +467,7 @@ public class Game
         // Bathroom
         bathroom.setExit("north", patientCare);
         bathroom.setExit("east", middleStall);
+        bathroom.store(pipe);
         middleStall.setExit("west", bathroom);
         middleStall.store(bleach);
         // Cafe
@@ -479,7 +481,13 @@ public class Game
         basement.store(officeKey);
         basement.store(bigRock);
         
-        
+        // other
+        powerPlant.store(fuseBox);
+        kitchen.store(knife);
+        roof.store(peculiarBlade);
+        ER.store(scapel);
+        breakRoom.store(keyCard);
+        lab.store(cabinetKey);
         // Adding rooms to map
         Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall, powerPlant, roof, breakRoom, elevator, mainOffice, ER, janitorCloset, kitchen, courtYard, giftShop, parkingLot, lobby, lab, XRay, hallway, stairs, mainEntrance};
         for (Room room : rooms){
