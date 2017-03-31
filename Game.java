@@ -448,7 +448,7 @@ public class Game
         // Not sure when this is triggered or when it will meet the right conditions
         return true;
     }
-    
+
     /**
      * Picks up an item. I.e. removes it from a the current room if it exists and adds
      * it to the player's inventory.
@@ -656,6 +656,7 @@ public class Game
         fileCabinet = new Item("file cabinet", 9999, false);
         playerFile = new Item("Your file", 1, true);
         fuseBox = new Item("fuse box", 9999, false);
+<<<<<<< HEAD
         
         // Creating Weapons
         Weapon pipe, scaple, knife, peculiarBlade;
@@ -663,7 +664,6 @@ public class Game
         scaple = new Weapon("scaple", .3, true, 15);
         knife = new Weapon("knife", 3, true, 35);
         peculiarBlade = new Weapon("peculiar blade", 10, true, 50);
-        
         
                             
         // Setting up exits and items between rooms:        
@@ -673,6 +673,7 @@ public class Game
         // Bathroom
         bathroom.setExit("north", patientCare);
         bathroom.setExit("east", middleStall);
+        bathroom.store(pipe);
         middleStall.setExit("west", bathroom);
         middleStall.store(bleach);
         // Cafe
@@ -686,7 +687,13 @@ public class Game
         basement.store(officeKey);
         basement.store(bigRock);
         
-        
+        // other
+        powerPlant.store(fuseBox);
+        kitchen.store(knife);
+        roof.store(peculiarBlade);
+        ER.store(scapel);
+        breakRoom.store(keyCard);
+        lab.store(cabinetKey);
         // Adding rooms to map
         Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall, powerPlant, roof, breakRoom, elevator, mainOffice, ER, janitorCloset, kitchen, courtYard, giftShop, parkingLot, lobby, lab, XRay, hallway, stairs, mainEntrance};
         for (Room room : rooms){
