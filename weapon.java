@@ -4,7 +4,7 @@
  * It must be equiped, but otherwise is stored normally.
  * 
  * @author Gavin Kyte and Aaron Chauvette
- * @version (a version number or a date)
+ * @version 2017.31.7
  */
 public class Weapon extends Item
 {

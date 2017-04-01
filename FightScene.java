@@ -13,24 +13,23 @@ public class FightScene
     private Random rng;
     private Scanner reader;
     private double playerPower;
-    private double killerPower;
-    
+    private double killerPower;    
 
     /**
      * Constructor for Minigame
      */
     public FightScene()
     {
-        playerPower = 3;
-        killerPower = 3;
+        playerPower = 10;
+        killerPower = 25;
         rng = new Random();
         reader = new Scanner(System.in);
     }
     public double playerDamage(Player hero){// Calculates how much damage the killer will take.
-        return playerPower * (hero.getHealth()/10);
+        return (playerPower + hero.getWeaponDamage()) * (hero.getHealth()/100);
     }
     public double killerDamage(NPC villain){// Calculates how much damage the player will take.
-        return killerPower * (villain.getHealth()/10);
+        return killerPower * (villain.getHealth()/100);
     }
     public int killerTurn()//Decides the killer's move.
     {

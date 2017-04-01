@@ -17,7 +17,7 @@ public class Player
     private boolean hidden;
     private ArrayList<String> roomHistory;
     private HashMap<String, Item> bag;
-    private Item myWeapon;
+    private Weapon myWeapon;
     private double weightLimit;
 
     /**
@@ -70,6 +70,7 @@ public class Player
      * @return String name of room to move into
      */
     public String goBack(){
+        if (roomHistory.size() == 0){return currentRoom;}
         setRoom(roomHistory.get(roomHistory.size()-1));
         // Uncomment the following lines of code to change method from going
         // between same rooms, or from undoing roomHistory:
@@ -100,7 +101,7 @@ public class Player
     public double getWeightLimit(){
         double totalWeightCarried = 0;
         for (Item i : bag.values()){
-            totalWeightCarried += bag.get(i).getWeight();
+            totalWeightCarried += i.getWeight();
         }
         return (weightLimit - totalWeightCarried);
     }
@@ -132,8 +133,18 @@ public class Player
         return chosenItem;
     }
     
+    /**
+     * @return double Health of player
+     */
     public double getHealth(){
         return health;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public boolean isHidden(){
+        return hidden;
     }
     
     /**
@@ -158,7 +169,27 @@ public class Player
      * Choose an item to use as a weapon if it is a weapon
      * @return String status of equip
      */
-    public String equipWeapon(String itemName){    
+    public String equip(String itemName){
+        if (has(itemName)){
+            if (bag.get(itemName) instanceof Weapon) {
+                myWeapon = (Weapon)bag.get(itemName);
+            } else {
+                return itemName + " is not a weapon";
+            }
+            
+            return itemName + " is equipped";
+        } else {
+            System.out.println("You do not have "+itemName+" in your bag");
+        }
         return "You have equiped " + itemName;
+    }
+    
+    /**
+     * Gets the damage of the weapon if any are equipped
+     * @return double damage points
+     */
+    public double getWeaponDamage(){
+        double power = (myWeapon != null) ? myWeapon.getPower():0.00;
+        return power;
     }
 }

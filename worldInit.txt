@@ -1,20 +1,94 @@
 // format for room
-// room _type_ _name_ <key>__description__
-room . Office generic description
-room . Lobby waiting room
-room . Cafeteria a place to serve and eat food
-room locked Basement bKey a dark and damp place with air ducts and heating vents
-room . MainHall a large, white-tiled hallway that smell slightly of bleach
+// room _type_ _name_ <key> __description__
+room . Office A small space crowded with paperwork and lined with file cabinets in the back
+room . Lobby The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs.
+room . Bathroom A pristinely white bathroom with chrome stalls and counters. It reeks of bleach.
+room . Stall A bathroom stall. A man is slumped against the wall and isn't breathing. He may be dead.
+room . Cafeteria A wide space filled with empty tables. Something smells rancid
+room locked Basement basementKey a dark and damp place with air ducts and heating vents
+// room . MainHall a large, white-tiled hallway that smell slightly of bleach
+room . PatientCare A room with several well made beds and curtains half-drawn to segment the room. There is some blood splattered by the door.
+room . Roof The top of the hospital. You can see the main entrance from here.
+// Want to change PowerPlant to something smaller like PowerRoom, Generator Room, etc
+room locked ControlRoom ControlKey A dark space with machines and what looks like a control panel
+room . BreakRoom Just your average break room. Maybe there is a sandwhich in the fridge you could steal.
+room locked Elevator power
+room . MainOffice A room with lime green wallpaper. There is a coffee table in the center and chairs to go with it. There
+room . ER The floor is stained with dried blood. Next a cooler, a pile of bodies lies in the corner.
+room . JanitorCloset It doesn't look like anyone's been in here for months. Things are scattered carelessly across the floor.
+room . Courtyard There is a pleasant breeze today. These birds are getting annoying though.
+room . Kitchen You can see were meals were made. The sink is full of dirty dishes and the room reeks with a foul odor.
+room . GiftShop The shelves are line up with lots of toys, pillows, and mugs. Something about this shop doesn't feel right.
+room . ParkingLot Flashing red and blue lights can be seen on every car. There are at least 20 of them surrounding the hospital.
+// You exit with your hands up. You are shoved to the ground and your hands are cuffed. The last thing you can remember is getting pushed into the back of a car before blacking out. 
+room locked Lab power Lots of research goes on in facilities like these. The lights in this place are loud.
+room . XRay Nothing apart from the table and tools stand out in this room. It seems to be normal. 
+room . Hallway-A There is a peculiar trail of blood leading from the room you woke up in to the stairs.
+room . Hallway-B
+room . Hallway-C
+room . Hallway-D
+room . Stairs-B1F
+room . Stairs-1F There is a trail of blood on the stairs.
+room . Stairs-2F
+room . Stairs-3F
+
 
 // format for exit
 // exit _mainRoom_ _direction_ _exitRoom_ [_direction_ _exitRoom_ ...]
-exit Office east Lobby
-exit Lobby east Cafeteria west Office south MainHall
-exit MainHall north lobby west Office down Basement
-exit Basement up MainHall
+
+// first floor
+
+exit Lobby north MainOffice east Bathroom south ParkingLot west CourtYard stairs Stairs-1F elevator Elevator
+exit Cafeteria north CourtYard
+exit ControlRoom east Basement
+exit MainOffice south Lobby
+exit ParkingLot north Lobby
+exit GiftShop south CourtYard
+exit Bathroom west Lobby stall Stall
+exit Stairs-1F lobby Lobby up Stairs-2F down Stairs-B1F
+exit Courtyard north GiftShop east Lobby south Cafeteria
+exit Stall bathroom Bathroom
+
+// second floor
+
+exit ER west Hallway-B
+exit JanitorCloset south Hallway-B
+exit XRay south Hallway-A
+exit Hallway-A stairs Stairs-2F west PatientCare north XRay east BreakRoom
+exit BreakRoom west Hallway-A east Kitchen
+exit Kitchen west BreakRoom east Hallway-B
+exit Hallway-B west Kitchen north JanitorCloset elevator Elevator east ER
+exit Stairs-2F south Hallway-A down Stairs-1F up Stairs-3F
+exit PatientCare east Hallway-A
+
+// third floor
+
+exit Hallway-C stairs Stairs-3F east Lab  
+exit Stairs-3F south Hallway-C down Stairs-2F
+exit Lab east Hallway-D south Office west Hallway-C
+exit Hallway-D elevator Elevator
+exit Office north Lab
+// other
+exit Basement elevator elevator west ControlRoom
+exit Elevator lobby Lobby basement Basement roof Roof floor2 Hallway-B floor3 Hallway-D
+exit Roof elevator Elevator
+exit Stairs-B1F basement Basement up Stairs-F1
+
 
 // format for add
-// add _type_ _name_ _weight_ _canTake_ <powerLevel> _destination_
-add . bleach 12.00 true MainHall
-// weapons
-add weapon knife 3.50 true 2.00 Cafeteria
+// add _type_ _destination_ _name_ _weight_ _canTake_ <powerLevel>
+add . Stall bleach 12.00 true
+add weapon Cafeteria knife 3.50 true 5.00
+add . BreakRoom keg 50 false
+add . ControlRoom FuseBox 50 false
+add weapon ER scalpel 3.5 true 25
+add weapon Bathroom pipe 20 true 34
+add . Office CabinetKey .1 true
+add . JanitorCloset ControlKey .1 true
+add . Stall  MainOfficeKey .1 true
+add . GiftShop LabKeyCard .1 true
+add weapon JanitorCloset mop 10 true 10
+add . MainOffice cabinet 80 false
+add . Lab chemicals 5 true
+add . ER kidney 4 true
+add . Cafeteria BasementKey .1 true

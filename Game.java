@@ -26,167 +26,42 @@ import java.util.Scanner;
 
 public class Game
 {
-    private Parser parser;
+    private Parser parser;    
+    private Random rng;
     private Room currentRoom;
-    private HashMap<String, Room> map;
-    private HashMap<String, Player> characters;
     private Player hero;
     private NPC villain;
-    private Random rng;
-    private Scanner scanner;
+    private HashMap<String, Room> map;
+    private HashMap<String, Player> characters;
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() throws IOException {
+        rng = new Random();
+        parser = new Parser();
         map = new HashMap<>();
         characters = new HashMap<>();
-        scanner = new Scanner(new BufferedReader(new FileReader("worldInit.txt"))).useDelimiter("\\n");
-        //prepareRooms();
         makeCharacters();
-        initWorld();
-        parser = new Parser();
+        worldInit(new Scanner(new BufferedReader(new FileReader("worldInit.txt"))).useDelimiter("\\n"));
         currentRoom = map.get(hero.getRoom());
-        rng = new Random();
     }
-
-    //Test
-    public void initWorld(){
-        while (scanner.hasNext()) {
-            String commandLine = scanner.next();
-            Scanner line = new Scanner(commandLine);
-            String command = "no command on line";
-            if (line.hasNext()) {
-                command = line.next();
-            }
-            
-            switch (command){
-                case "//":
-                    break;
-                case "room":
-                    // room command format
-                    // room _typeOfRoom_ _title_ _shortDescription_
-                    String typeOfRoom = "room";
-                    String title = "defaultTitle";
-                    String key = "key";
-                    String description = "";                    
-                    if (line.hasNext()){
-                        typeOfRoom = line.next();                        
-                    } else {
-                        System.out.println("\"room\" command during init is missing room type");
-                    }                    
-                    if (line.hasNext()){
-                        title = line.next();
-                    } else {
-                        System.out.println("\"room\" command during init is missing a title");
-                    }
-                    if ((typeOfRoom.equals("locked") || typeOfRoom.equals("unlocked")) && line.hasNext()){
-                        key = line.next();
-                    } else {
-                        // nothing should happen here
-                    }
-                    while (line.hasNext()){
-                        description += line.next() + " ";
-                    }
-                    
-                    Room r = createRoom(typeOfRoom, title, key, description);                    
-                    if (map.get(r.getTitle()) == null) {
-                        map.put(r.getTitle(), r);
-                    } else {
-                        System.out.println("Room already exists. Please remove the copy");
-                    }
-                    break;
-                    
-                case "exit":
-                    // format for exit command
-                    // exit _mainRoomName_ [_direction_ _roomName_ ...]
-                    String roomName = "Default";
-                    if (line.hasNext()) {
-                        roomName = line.next();
-                    } else {
-                        System.out.println("Unfinished command \"exit,\" please finish line and try again.");
-                        break;
-                    }
-                    
-                    Room mainRoom = map.get(roomName);
-                    if (mainRoom == null){
-                        System.out.println("On command \"exit\" during init, the mainRoom is null.");
-                        System.out.println("Not setting exits for " + roomName + " because it hasn't been created.");
-                        break;
-                    }                    
-                    while (line.hasNext()){
-                        String direction = line.next();
-                        roomName = "DefaultExit";
-                        if (line.hasNext()){
-                            roomName = line.next();
-                            Room exitRoom = map.get(roomName);
-                            if (roomName != null) {
-                                mainRoom.setExit(direction, exitRoom);
-                            } else {
-                                System.out.println("On command \"exit\" during init, exit room wasn't found.");
-                            }
-                        } else {
-                            System.out.println("On command \"exit\" during init, the exit room wasn't provided");
-                        }                        
-                    }                    
-                    break;
-                    
-                case "add":
-                    // add command format
-                    // add _type_ _name_ _weight_ _canTake_ _<powerLevel>_ _destination_
-                    String type = "item";
-                    String name = "defaultName";
-                    double weight = 0.00;
-                    boolean canTake = true;
-                    double powerLevel = 0.00;
-                    String destination = null;
-                    if (line.hasNext()){
-                        type = line.next();
-                    } else {
-                        System.out.println("\"add\" command during init is missing a type");
-                    }
-                    if (line.hasNext()){
-                        name = line.next();
-                    } else {
-                        System.out.println("\"add\" command during init is missing a name");
-                    }
-                    if (line.hasNextDouble()){
-                        weight = line.nextDouble();
-                    } else {
-                        System.out.println("\"add\" command during init is missing a double for weight");
-                    }
-                    if (line.hasNextBoolean()){
-                        canTake = line.nextBoolean();
-                    } else {
-                        System.out.println("\"add\" command during init is missing a boolean for canTake");
-                    }
-                    if (line.hasNextDouble() && type.equals("weapon")){
-                        powerLevel = line.nextDouble();
-                    } else {
-                        // nothing should happen here
-                    }
-                    if (line.hasNext()){
-                        destination = line.next();
-                    } else {
-                        System.out.println("\"add\" command during init is missing a destination name");
-                    }
-                    
-                    Item i = createItem(type, name, weight, canTake, powerLevel);
-                    if (map.get(destination) != null) {
-                        map.get(destination).store(i);
-                    } else {
-                        System.out.println(i.getName() + " cannot be stored because " + destination + "doesn't exist");
-                    }                    
-                    break;
-                    
-                case "no command on line":
-                    break;
-                    
-                default:
-                    System.out.println("Command not recognized in init file");
-                    break;
-            }
+    
+    /**
+     *  Main play routine.  Loops until end of play.
+     */
+    public void play(){            
+        printWelcome();
+        // Enter the main command loop.  Here we repeatedly read commands and
+        // execute them until the game is over.
+                
+        boolean finished = false;
+        while (! finished && (hero.getHealth() > 0)){
+            Command command = parser.getCommand();
+            System.out.println();
+            finished = processCommand(command);
         }
+        System.out.println("Thank you for playing. Good bye.");
     }
     
     /**
@@ -211,8 +86,10 @@ public class Game
     
     /**
      * Casts room into correct type
+     * @return Room some type of room
+     * @param Type of room, Title of room, Key (if relevant), Description of room
      */
-    public Room createRoom(String type, String title, String key, String description){
+    private Room createRoom(String type, String title, String key, String description){
         Room r = null;
         if (type.equals("locked")){
             r = new LockedRoom(title, description, true);
@@ -233,6 +110,7 @@ public class Game
     
     /**
      * Creates a specific type of item, necessary during init to avoid code duplication
+     * @return Item of varying type
      * @param String type, String name, double weight, boolean canTake, double powerLevel
      */
     private Item createItem(String type, String name, double weight, boolean canTake, double powerLevel){
@@ -250,31 +128,16 @@ public class Game
             return i;
         }
     }
-    
-    /**
-     *  Main play routine.  Loops until end of play.
-     */
-    public void play(){            
-        printWelcome();
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-                
-        boolean finished = false;
-        while (! finished){
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-        }
-        System.out.println("Thank you for playing. Good bye.");
-    }
 
     /**
      * Print out the opening message for the player.
      */
     private void printWelcome(){
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
+        System.out.println("You wake up in a hospital bed. You're mouth is parched, and you smell bleach in the air.");
+        System.out.println("Looking down you see a torn newspaper.");
+        System.out.println("It reads \"...ILLER STILL ON THE R...WELCOME TO ZUUL...type \"help\" if you need it\"");
+        System.out.println("After standing up, you take a look around");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
     }
@@ -282,7 +145,7 @@ public class Game
     /**
      * Given a command, process (that is: execute) the command.
      * @param command The command to be processed.
-     * @return true If the command ends the game, false otherwise.
+     * @return true if the command ends the game, false otherwise.
      */
     private boolean processCommand(Command command){
         boolean wantToQuit = false;
@@ -313,7 +176,8 @@ public class Game
                 break;
             case "look":
                 look(hero);
-                break;    
+                break;
+            case "i":
             case "inventory":
                 System.out.println(hero.getInventory());
                 break;
@@ -328,6 +192,18 @@ public class Game
             case "hide":
                 hide(hero);
                 moveNPC();
+                break;
+            case "unhide":
+                unhide(hero);
+                moveNPC();
+                break;
+            case "use":
+            case "interact":
+                interact(command);
+                break;
+                
+            case "equip":
+                equip(command);
                 break;
             case "fight":
                 fight(hero, command);
@@ -347,12 +223,26 @@ public class Game
     
     // Defining Commands
     /**
+     * Equips a weapon if it is in the player's inventory
+     * @param A Command that indicates what to equip
+     */
+    private void equip(Command command){
+        String itemName = "";
+        if (!command.hasSecondWord()){
+            System.out.println("Equip what?");
+            return;
+        }
+        itemName = command.getSecondWord();
+        System.out.print(hero.equip(itemName));        
+    }
+    
+    /**
      * Returns player to the previous room. This means that if this
      * is called each turn, the player will alternate between two rooms
      * DANGER: This currently would bypass locked doors and trapdoors as
      * it goes directly to the room without checking if it can be entered.
      */
-    private void goBack(Player player){
+    private void goBack(Player player){        
         currentRoom = map.get(player.goBack());
         System.out.println(currentRoom.getShortDescription());
     }
@@ -361,6 +251,7 @@ public class Game
      * Prints the current room's exit directions and items contained
      */
     private void look(Player player){
+        System.out.println(currentRoom.getTitle());
         currentRoom = map.get(player.getRoom());
         System.out.println(currentRoom.look());
     }
@@ -377,7 +268,65 @@ public class Game
         System.out.println("Your command words are:");
         parser.showCommands();
     }
-
+    
+    private void interact(Command command){
+        if (!command.hasSecondWord()){
+            System.out.println("Do what?");
+            return;
+        }
+        
+        String obj = command.getSecondWord();
+        switch (obj){
+            case "keg":
+                if (currentRoom.contains("keg")){
+                    drunkenTransport();
+                } else {
+                    System.out.println("No keg here");
+                }
+                break;
+            case "FuseBox":
+                if (currentRoom.contains("FuseBox")){
+                    turnOnPower();
+                } else {
+                    System.out.println("No FuseBox here");
+                }                
+                break;
+            case "cabinet":
+                if (currentRoom.contains("cabinet")){
+                    getCaseFiles();
+                } else {
+                    System.out.println("No cabinet here");
+                }    
+                break;
+            default:
+                System.out.println("I don't understand...");
+                break;
+        }
+    }
+    
+    private void drunkenTransport(){
+        currentRoom = map.get("Basement");
+        // Bad convention here, the name could change and this could led to problems
+        hero.addItem(new Item("ControlKey", 0.01, true));
+        
+        System.out.println("You drink from the keg and gag at the rancid taste.");
+        System.out.println("The room starts spinning and dims to black. What did you drink?");
+        System.out.println("...");
+        System.out.println("Mouth dry, eyes itchy, back stiff, you wake up on a concrete floor.");
+        System.out.println(currentRoom.getLongDescription());
+    }
+    
+    private void turnOnPower(){
+        LockedRoom lab = (LockedRoom) map.get("Lab");
+        lab.setKey("LabKeyCard");
+        LockedRoom elevator = (LockedRoom) map.get("Elevator");
+        elevator.unlock();
+    }
+    
+    private void getCaseFiles(){
+        
+    }
+    
     /** 
      * Try to in to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
@@ -405,9 +354,10 @@ public class Game
             currentRoom = nextRoom;
             hero.setRoom(currentRoom.getTitle());
             System.out.println(currentRoom.getLongDescription());
+            unhide(hero);
         } else {
             System.out.println("You cannot enter this room");
-            System.out.println(currentRoom.getRequirements());
+            System.out.println(nextRoom.getRequirements());
         }
     }
     
@@ -419,10 +369,17 @@ public class Game
      * @param Player usually main character
      */
     private void hide(Player player){
-        System.out.println(player.getName() + player.hide());
-    }    
+        if (!player.isHidden()){
+            System.out.println(player.getName() + player.hide());
+        } else {
+            System.out.println("You are already hidding.");
+        }
+        
+    }
     private void unhide(Player player){
-        System.out.println(player.getName() + player.unhide());
+        if (player.isHidden()){
+            System.out.println(player.getName() + player.unhide());
+        }
     }
     
     /** 
@@ -437,16 +394,6 @@ public class Game
         } else {
             return true;  // signal that we want to quit
         }
-    }
-    
-    /**
-     * The player has won if he meets all the conditions.
-     * Prints out the winning message and ends the play loop.
-     * @return boolean quit the game
-     */
-    private boolean win(){
-        // Not sure when this is triggered or when it will meet the right conditions
-        return true;
     }
 
     /**
@@ -471,7 +418,7 @@ public class Game
                 System.out.println("This item is too heavy for you to pick up right now.");
             }
         } else {
-            System.out.println("There is no " + itemName + " here.");
+            System.out.println("There is no "+itemName+" here.");
         }
     }
     
@@ -486,7 +433,7 @@ public class Game
             currentRoom.store(player.drop(itemName));
             System.out.println("You dropped " + itemName);
         } else {
-            System.out.println("You don't have \"" + itemName + "\" in your inventory.");
+            System.out.println("You don't have \""+itemName+"\" in your inventory.");
         }
     }
     
@@ -536,7 +483,7 @@ public class Game
         String opponentName = command.getSecondWord();
         NPC opponent = (NPC)characters.get(opponentName);
         if (characters.get(opponentName) == null) {
-            System.out.println("You cannot fight \"" + opponentName + "\" here.");
+            System.out.println("You cannot fight \""+opponentName+"\" here.");
             return;
         } else if (opponent != player){
             triggerFight(player, opponent);
@@ -555,7 +502,7 @@ public class Game
                 // This accounts for the character being the hero (a Player)
                 NPC opponent = (NPC)character;
                 boolean inSameRoom = playerRoom.equals(opponent.getRoom());
-                if (inSameRoom && opponent.isAggro()) {triggerFight(player, opponent);}
+                if (!player.isHidden() && inSameRoom && opponent.isAggro()) {triggerFight(player, opponent);}
             }
         }
     }
@@ -569,31 +516,39 @@ public class Game
         fight.killerEncounter(player, opponent);
     }
     
+    // Environment actions
+    /**
+     * The player has won if he meets all the conditions.
+     * Prints out the winning message and ends the play loop.
+     * @return boolean quit the game
+     */
+    private boolean winGame(){
+        // Not sure when this is triggered or when it will meet the right conditions
+        return true;
+    }
+    
     /**
      * Moves each NPC in the Map into an adjacent room if it is available
+     * Then checks for a fight
      */
     private void moveNPC(){
-        // Going to make this choice random eventually
-        // DANGER!! This could be root of weird error down the line involving currentRoom
-        currentRoom = map.get(villain.getRoom());
-        String[] exits = currentRoom.getExitDirections();
-        if (exits.length == 0) {System.out.println("Villain has been trapped"); return;}
+        Room npcRoom = map.get(villain.getRoom());
+        String[] exits = npcRoom.getExitDirections();
+        if (exits.length == 0) {System.out.println("Villain is stuck"); return;}
         
         int choice = rng.nextInt(exits.length);
         String randomDirection = exits[choice];
         
-        Room nextRoom = currentRoom.getExit(randomDirection);
+        Room nextRoom = npcRoom.getExit(randomDirection);
         if (nextRoom != null && nextRoom.meetsRequirements()) {
             villain.setRoom(nextRoom.getTitle());
         } else {
-            // Villain can't get in room and is yelling
-            System.out.println("You hear someone yelling in frustration somewhere nearby.");
+            // Villain can't get in room and is making noise
+            System.out.println("*banging noise nearby*");
         }
         
         // For testing, shows where villain is
-        System.out.println("Villain is in " + villain.getRoom());
-        // If we need to reset current room, this next line will do so
-        //currentRoom = map.get(hero.getRoom());
+        //System.out.println("Villain is in " + villain.getRoom());
         checkFightTrigger(hero);
     }
     
@@ -602,99 +557,159 @@ public class Game
      * This includes the hero and villain, but can have side characters as well.
      */
     private void makeCharacters(){
-        hero = new Player("Hero", "Lobby");
-        villain = new NPC("Villain", "Basement", true);
+        hero = new Player("Hero", "PatientCare");
+        villain = new NPC("Villain", "Lobby", true);
         
         characters.put(hero.getName(), hero);
         characters.put(villain.getName(), villain);
-    }    
+    }
     
     /**
-     * Creates rooms and items, then sets up the exits for each room and stores the items
-     */    
-    private void prepareRooms(){
-        // Creating rooms
-        Room patientCare, basement, cafe, office, bathroom, middleStall, powerPlant, roof, breakRoom, elevator, mainOffice, ER, janitorCloset, kitchen, courtYard, giftShop, parkingLot, lobby, lab, XRay, hallway, stairs, mainEntrance;
-        patientCare = new Room("Patient Care", "A room with curtains surrounding several beds.\n"
-            + "The bed in the far corner has some sheets sticking out under the curtain.");
-        basement = new Room("Basement", "A dusty cement enclosure with strange machines\n"
-            + "and boxes scattered about.");
-        cafe = new Room("Cafe", "A open space filled with tables and surrounded\n" 
-            + "with booths that once served food. You smell something rancid.");
-        office = new LockedRoom("Office", "A small space with file cabinets lining the back wall,\n" 
-            + "there is a desk to your right.", true);
-        bathroom = new Room("Bathroom", "A pristine white room that reeks of bleach.\n"
-            + "All of the stalls are closed except one in the middle");
-        middleStall = new Room("Bathroom Stall", "A dead body is slumped over in the stall.\n"
-            + "At his feet is an open jug of bleach. He does not appear to be breathing.");
-        roof = new Room("Roof top", "description");
-        powerPlant = new Room("Power Plant", "description");
-        breakRoom = new Room("Break Room", "description");
-        elevator = new LockedRoom("Elevator", "description", true);
-        mainOffice = new Room("Main Office", "description");
-        ER = new Room("ER", "description");
-        janitorCloset = new Room("Janitor's Closet", "description");
-        courtYard = new Room("Court Yard", "description");
-        kitchen = new Room("Kitchen", "description");
-        giftShop = new Room("Gift Shop", "description");
-        parkingLot = new LockedRoom("Parking Lot", "description", true);
-        lobby = new Room("Lobby", "description");
-        lab = new Room("Lab", "description");
-        XRay = new Room("XRay room", "description");
-        hallway = new Room("Hallway", "description");
-        stairs = new Room("Stairs", "description");
-        mainEntrance = new Room("Main Entrance", "description");
-        
-        // Creating Items
-        Item officeKey, bleach, bigRock, keyCard, keg, fileCabinet, playerFile, fuseBox;
-        
-        officeKey = new Item("key", 0.1, true);
-        bleach = new Item("bleach", 12.00, true);
-        bigRock = new Item("rock", 99.00, true);
-        keyCard = new Item("key card", .1, true);
-        keg = new Item("keg", 9999, false);
-        fileCabinet = new Item("file cabinet", 9999, false);
-        playerFile = new Item("Your file", 1, true);
-        fuseBox = new Item("fuse box", 9999, false);
-        
-        // Creating Weapons
-        Weapon pipe, scaple, knife, peculiarBlade;
-        pipe = new Weapon("pipe", 6.00, true, 25);
-        scaple = new Weapon("scaple", .3, true, 15);
-        knife = new Weapon("knife", 3, true, 35);
-        peculiarBlade = new Weapon("peculiar blade", 10, true, 50);
-        
-                            
-        // Setting up exits and items between rooms:        
-        // Patient Care
-        patientCare.setExit("west", cafe);
-        patientCare.setExit("south", bathroom);
-        // Bathroom
-        bathroom.setExit("north", patientCare);
-        bathroom.setExit("east", middleStall);
-        bathroom.store(pipe);
-        middleStall.setExit("west", bathroom);
-        middleStall.store(bleach);
-        // Cafe
-        cafe.setExit("down", basement);
-        cafe.setExit("east", patientCare);
-        cafe.setExit("south", office);
-        // Office
-        office.setExit("north", cafe);
-        // Basment
-        basement.setExit("up", cafe);
-        basement.store(officeKey);
-        basement.store(bigRock);
-        
-        // other
-        powerPlant.store(fuseBox);
-        kitchen.store(knife);
-        roof.store(peculiarBlade);
-        breakRoom.store(keyCard);
-        // Adding rooms to map
-        Room[] rooms = {patientCare, basement, cafe, office, bathroom, middleStall, powerPlant, roof, breakRoom, elevator, mainOffice, ER, janitorCloset, kitchen, courtYard, giftShop, parkingLot, lobby, lab, XRay, hallway, stairs, mainEntrance};
-        for (Room room : rooms){
-            map.put(room.getTitle(), room);
+     * Create the world map by filling it with rooms
+     * Setting their exits
+     * And making items to put in each.
+     * Prints to terminal if anything is wrong in the init file
+     * 
+     * @param Scanner made from the .txt file containing map info
+     */
+    private void worldInit(Scanner initFile){
+        int lineNumber = 0;
+        while (initFile.hasNext()) {
+            lineNumber++;
+            String commandLine = initFile.next();
+            Scanner line = new Scanner(commandLine);
+            String command = "no command on line";
+            if (line.hasNext()) {
+                command = line.next();
+            }
+            
+            switch (command){
+                case "//":
+                    break;
+                case "room":
+                    // room command format
+                    // room _typeOfRoom_ _title_ _shortDescription_
+                    String typeOfRoom = "room";
+                    String title = "defaultTitle";
+                    String key = "key";
+                    String description = "";                    
+                    if (line.hasNext()){
+                        typeOfRoom = line.next();                        
+                    } else {
+                        System.out.println("@"+lineNumber+": \"room\" command during init is missing room type");
+                    }                    
+                    if (line.hasNext()){
+                        title = line.next();
+                    } else {
+                        System.out.println("@"+lineNumber+": \"room\" command during init is missing a title");
+                    }
+                    if ((typeOfRoom.equals("locked") || typeOfRoom.equals("unlocked")) && line.hasNext()){
+                        key = line.next();
+                    } else {
+                        // nothing should happen here
+                    }
+                    while (line.hasNext()){
+                        description += line.next() + " ";
+                    }
+                    
+                    Room r = createRoom(typeOfRoom, title, key, description);                    
+                    if (map.get(r.getTitle()) == null) {
+                        map.put(r.getTitle(), r);
+                    } else {
+                        System.out.println("@"+lineNumber+": Room already exists. Please remove the copy");
+                    }
+                    break;
+                    
+                case "exit":
+                    // format for exit command
+                    // exit _mainRoomName_ [_direction_ _roomName_ ...]
+                    String roomName = "Default";
+                    if (line.hasNext()) {
+                        roomName = line.next();
+                    } else {
+                        System.out.println("@"+lineNumber+": Unfinished command \"exit,\" please finish line and try again.");
+                        break;
+                    }
+                    
+                    Room mainRoom = map.get(roomName);
+                    if (mainRoom == null){
+                        System.out.println("@"+lineNumber+": On command \"exit\" during init, the mainRoom ("+roomName+") is null.");
+                        System.out.println("Not setting exits for "+roomName+" because it hasn't been created.");
+                        break;
+                    }                    
+                    while (line.hasNext()){
+                        String direction = line.next();
+                        roomName = "DefaultExit";
+                        if (line.hasNext()){
+                            roomName = line.next();
+                            Room exitRoom = map.get(roomName);
+                            if (roomName != null) {
+                                mainRoom.setExit(direction, exitRoom);
+                            } else {
+                                System.out.println("@"+lineNumber+": On command \"exit\" during init, exit room ("+roomName+") doesn't exist.");
+                            }
+                        } else {
+                            System.out.println("@"+lineNumber+": On command \"exit\" during init, the exit room wasn't provided");
+                        }                        
+                    }                    
+                    break;
+                    
+                case "add":
+                    // add command format
+                    // add _type_  _destination_ _name_ _weight_ _canTake_ _<powerLevel>_
+                    String type = "item";
+                    String destination = null;
+                    String name = "defaultName";
+                    double weight = 0.00;
+                    boolean canTake = true;
+                    double powerLevel = 1.00;
+                    
+                    if (line.hasNext()){
+                        type = line.next();
+                    } else {
+                        System.out.println("@"+lineNumber+": \"add\" command during init is missing a type");
+                    }
+                    if (line.hasNext()){
+                        destination = line.next();
+                    } else {
+                        System.out.println("@"+lineNumber+": \"add\" command during init is missing a destination name");
+                    }
+                    if (line.hasNext()){
+                        name = line.next();
+                    } else {
+                        System.out.println("@"+lineNumber+": \"add\" command during init is missing a name");
+                    }
+                    if (line.hasNextDouble()){
+                        weight = line.nextDouble();
+                    } else {
+                        System.out.println("@"+lineNumber+": \"add\" command during init is missing a double for weight");
+                    }
+                    if (line.hasNextBoolean()){
+                        canTake = line.nextBoolean();
+                    } else {
+                        System.out.println("@"+lineNumber+": \"add\" command during init is missing a boolean for canTake");
+                    }
+                    if (line.hasNextDouble() && type.equals("weapon")){
+                        powerLevel = line.nextDouble();
+                    } else {
+                        // nothing should happen here
+                    }
+                                        
+                    Item i = createItem(type, name, weight, canTake, powerLevel);
+                    if (map.get(destination) != null) {
+                        map.get(destination).store(i);
+                    } else {
+                        System.out.println("@"+lineNumber+": "+i.getName()+" cannot be stored because "+destination+"doesn't exist");
+                    }                    
+                    break;
+                    
+                case "no command on line":
+                    break;
+                    
+                default:
+                    System.out.println("Command not recognized in init file");
+                    break;
+            }
         }
     }
 }

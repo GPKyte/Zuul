@@ -21,10 +21,16 @@ public class LockedRoom extends Room
         roomReqs = "You need the " + keyToUnlock + " to unlock this room.";
     }
     
+    /**
+     * @return boolean whether the room can be entered
+     */
     public boolean meetsRequirements(){
         return !isLocked;
     }
 
+    /**
+     * @return String returns the name of the key to unlock room
+     */
     public String getRequirements(){
         return roomReqs;
     }
