@@ -35,12 +35,12 @@ room . Stairs-3F
 
 // first floor
 
-exit Lobby north MainOffice east Bathroom south ParkingLot west CourtYard stairs Stairs-1F elevator Elevator
-exit Cafeteria north CourtYard
+exit Lobby north MainOffice east Bathroom south ParkingLot west Courtyard stairs Stairs-1F elevator Elevator
+exit Cafeteria north Courtyard
 exit ControlRoom east Basement
 exit MainOffice south Lobby
 exit ParkingLot north Lobby
-exit GiftShop south CourtYard
+exit GiftShop south Courtyard
 exit Bathroom west Lobby stall Stall
 exit Stairs-1F lobby Lobby up Stairs-2F down Stairs-B1F
 exit Courtyard north GiftShop east Lobby south Cafeteria
@@ -68,10 +68,10 @@ exit Office north Lab
 
 // other
 
-exit Basement elevator elevator west ControlRoom
+exit Basement elevator Elevator west ControlRoom
 exit Elevator lobby Lobby basement Basement roof Roof floor2 Hallway-B floor3 Hallway-D
 exit Roof elevator Elevator
-exit Stairs-B1F basement Basement up Stairs-F1
+exit Stairs-B1F basement Basement up Stairs-1F
 
 
 // format for add

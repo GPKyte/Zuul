@@ -363,7 +363,7 @@ public class Game
         System.out.println("(The elevator now works)");
     }
     
-    public void getCaseFiles() throws IOException{        
+    private void getCaseFiles() throws IOException{        
         System.out.println("You used the key to open the cabinet and look inside.");
         System.out.println("Manilla envelopes inked with red are lined up to the back.");
         System.out.println("In the middle is a thick folder with \""+name+"\" on the front.");
@@ -593,7 +593,7 @@ public class Game
     /**
      * End game
      */
-    public void winGame(){
+    private void winGame(){
         System.out.println("You exit the hospital to find yourself surronded by police.");
         System.out.println("You are tackled to the ground and your hands are cuffed.");
         System.out.println("The last thing you can remember is getting pushed into");

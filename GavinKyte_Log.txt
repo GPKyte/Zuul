@@ -236,3 +236,20 @@ Side note: can add a method to Room called addScene, that would allow for variab
 	Been working for about an hour now, the init file works, now I'm expanding it to have further safety checks
 	and account for more, i.e. special rooms and items.
 	THEN I think it'd be REALLY cool to test out a save / load game feature.
+
+7:06 PM 4/1/2017
+	Didn't log any of the last two days; this will serve as the log for both Aaron and I today.
+	Added and polished a lot. Updated the featureList to reflect that.
+	Decided not to add the chatter bot as an NPC for the time constraints. But all levels are achieved,
+	the game works. Will include an example log where we beat the game as the tutorial.
+	Some things that are added that may be helpful while inspecting the game.. If you "use keg" in the
+	break room, you will be moved ahead in the game and skip steps. You can pick up a kidney as well.
+	If it's in the player's bag when they die in a fight, they get a second chance and lose the kidney.
+	Additionally, the XRay room has a cheat weapon that does extreme damage. You can still die if
+	you aren't lucky though. I did.
+
+	Other than that, the game is interesting, a littel bit morbid and kinda fun to play. There are a lot
+	of rooms, so I've left the map method public, you may want to do unlimited buffering in the console,
+	and use that command before play(). Have fun!
+
+	Log out.
