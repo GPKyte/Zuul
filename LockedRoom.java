@@ -31,7 +31,8 @@ public class LockedRoom extends Room
     /**
      * @return String returns the name of the key to unlock room
      */
-    public String getRequirements(){
+    public String getRequirements(){        
+        roomReqs = "You need the " + keyToUnlock + " to unlock this room.";
         return roomReqs;
     }
 

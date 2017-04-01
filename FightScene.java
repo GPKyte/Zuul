@@ -21,7 +21,7 @@ public class FightScene
     public FightScene()
     {
         playerPower = 10;
-        killerPower = 25;
+        killerPower = 35;
         rng = new Random();
         reader = new Scanner(System.in);
     }
@@ -128,6 +128,7 @@ public class FightScene
     {
         boolean fight = true;
         boolean wonFight = false;
+        double originalHealth = hero.getHealth();
         System.out.println("A wild killer appears!");
         while(fight){
             gameTurn(hero, villain);
@@ -136,10 +137,18 @@ public class FightScene
                 System.out.println("You died.");
                 wonFight = false;
                 fight = false;
+                if (hero.has("kidney")){
+                    hero.drop("kidney");
+                    System.out.println("Kidney used for resurrection!");
+                    System.out.println("You gain another chance for using the dark arts.");
+                    hero.setHealth(100);
+                    killerEncounter(hero, villain);
+                }
             }
             else if(villain.getHealth() <= 0){
                 System.out.println("You defeated the wild killer!");
                 wonFight = true;
+                hero.setHealth(originalHealth);
                 fight = false;
             }
         } 

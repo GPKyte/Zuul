@@ -105,7 +105,7 @@ public class Player
         }
         return (weightLimit - totalWeightCarried);
     }
-    
+   
     /**
      * Determines if player has a item in their bag
      * @return boolean does or doesn't have item
@@ -138,6 +138,14 @@ public class Player
      */
     public double getHealth(){
         return health;
+    }
+    
+    /**
+     * Sets health to some value. Used after player wins fight
+     * @param double Value of health
+     */
+    public void setHealth(double health){
+        this.health = health;
     }
     
     /**
@@ -179,9 +187,8 @@ public class Player
             
             return itemName + " is equipped";
         } else {
-            System.out.println("You do not have "+itemName+" in your bag");
+            return "You do not have "+itemName+" in your bag";
         }
-        return "You have equiped " + itemName;
     }
     
     /**

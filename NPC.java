@@ -9,7 +9,7 @@
 public class NPC extends Player
 {
     private boolean isAggro; // Will they attack on sight?
-    private double health;
+    private boolean canMove;
     
     /**
      * Constructor for objects of class NPC
@@ -17,7 +17,7 @@ public class NPC extends Player
     public NPC(String name, String room, boolean isAggro){
         super(name, room);
         this.isAggro = isAggro;
-        this.health = 100;
+        this.canMove = true;
     }
     
     /**
@@ -28,7 +28,16 @@ public class NPC extends Player
         return this.isAggro;
     }
     
+    public boolean moves(){
+        return this.canMove;
+    }
+    
+    public void pacify(){
+        this.isAggro = false;
+        this.canMove = false;
+    }
+    
     public void takeDamage(double damage){
-        health -= damage;
+        super.takeDamage(damage);
     }
 }

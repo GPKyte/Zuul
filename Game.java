@@ -28,11 +28,11 @@ public class Game
 {
     private Parser parser;    
     private Random rng;
-    private Room currentRoom;
+    private String name;
     private Player hero;
-    private NPC villain;
+    private Room currentRoom;
     private HashMap<String, Room> map;
-    private HashMap<String, Player> characters;
+    private HashMap<String, NPC> characters;
         
     /**
      * Create the game and initialise its internal map.
@@ -40,6 +40,7 @@ public class Game
     public Game() throws IOException {
         rng = new Random();
         parser = new Parser();
+        name = "John Smith";
         map = new HashMap<>();
         characters = new HashMap<>();
         makeCharacters();
@@ -54,12 +55,33 @@ public class Game
         printWelcome();
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+        int turns = 0;
+        int timeLimit = 35;
+        boolean notTriggered = true;
         boolean finished = false;
         while (! finished && (hero.getHealth() > 0)){
-            Command command = parser.getCommand();
-            System.out.println();
-            finished = processCommand(command);
+            if (turns >= timeLimit && notTriggered){
+                notTriggered = false;
+                System.out.println("Time limit reached");
+                // Adds 20 cops in the lobby to fight the player for not finishing in time 
+                for (int i=1; i<=20; i++){
+                    String copName = "Cop-";
+                    copName += i;
+                    characters.put(copName, new NPC(copName, "Lobby", true));
+                }
+                System.out.println("The cops break down the door and flood the lobby");
+                System.out.println("Good luck, criminal. (Try to win to find out why)");
+            } else {
+                Command command = parser.getCommand();
+                System.out.println();
+                finished = processCommand(command);
+                turns++;
+            }
+            // ParkingLot is the last room, if they reach it, it will trigger the winning event
+            if (currentRoom.getTitle().equals("ParkingLot")){
+                winGame();
+                finished = true;
+            }                
         }
         System.out.println("Thank you for playing. Good bye.");
     }
@@ -135,13 +157,19 @@ public class Game
     private void printWelcome(){
         System.out.println();
         System.out.println("You wake up in a hospital bed. You're mouth is parched, and you smell bleach in the air.");
-        System.out.println("Looking down you see a torn newspaper.");
-        System.out.println("It reads \"...ILLER STILL ON THE R...WELCOME TO ZUUL...type \"help\" if you need it\"");
+        System.out.println("Looking down you see a torn and crumpled newspaper.");
+        System.out.println("It reads \"...ILLER STILL ON THE R...W...ZUUL...type \"help\" if you need it\"");
+        System.out.println("On your wrist is a white band with your name.");
+        System.out.println("It's blurry though. What does it say?");
+        System.out.print("Name: ");
+        Scanner s = new Scanner(System.in);
+        name = s.nextLine();
+        System.out.println();
         System.out.println("After standing up, you take a look around");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
     }
-
+    
     /**
      * Given a command, process (that is: execute) the command.
      * @param command The command to be processed.
@@ -161,7 +189,7 @@ public class Game
                 printHelp();
                 break;
             case "go":
-                goRoom(command);
+                goRoom(command);                
                 moveNPC();
                 break;
             case "back":
@@ -198,17 +226,13 @@ public class Game
                 moveNPC();
                 break;
             case "use":
-            case "interact":
                 interact(command);
-                break;
-                
+                break;                
             case "equip":
                 equip(command);
                 break;
             case "fight":
                 fight(hero, command);
-                // When fight determines GameOver, uncomment this:
-                // wantToQuit = fight(hero, command);
                 break;
             case "quit":
                 wantToQuit = quit(command);
@@ -233,7 +257,7 @@ public class Game
             return;
         }
         itemName = command.getSecondWord();
-        System.out.print(hero.equip(itemName));        
+        System.out.println(hero.equip(itemName));        
     }
     
     /**
@@ -292,8 +316,14 @@ public class Game
                 }                
                 break;
             case "cabinet":
-                if (currentRoom.contains("cabinet")){
-                    getCaseFiles();
+                if (currentRoom.contains("cabinet") && hero.has("CabinetKey")){
+                    try {
+                        getCaseFiles();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if (!hero.has("CabinetKey")) {
+                    System.out.println("You don't have the key to open the file cabinet. Go find it.");
                 } else {
                     System.out.println("No cabinet here");
                 }    
@@ -305,14 +335,20 @@ public class Game
     }
     
     private void drunkenTransport(){
-        currentRoom = map.get("Basement");
-        // Bad convention here, the name could change and this could led to problems
-        hero.addItem(new Item("ControlKey", 0.01, true));
+        this.currentRoom = map.get("Basement");
+        LockedRoom basement = (LockedRoom)currentRoom;
+        LockedRoom control = (LockedRoom)map.get("ControlRoom");
+        basement.unlock();
+        hero.setRoom(currentRoom.getTitle());
+        hero.addItem(new Item(control.getKey(), 0.01, true));
+        hero.addItem(new Item(basement.getKey(), 0.01, true));
+        hero.takeDamage(hero.getHealth()/4);
         
         System.out.println("You drink from the keg and gag at the rancid taste.");
         System.out.println("The room starts spinning and dims to black. What did you drink?");
-        System.out.println("...");
+        System.out.println("...(Health Reduced to: "+hero.getHealth()+")...");
         System.out.println("Mouth dry, eyes itchy, back stiff, you wake up on a concrete floor.");
+        System.out.println("Something jangles in your pocket when you stand up.");
         System.out.println(currentRoom.getLongDescription());
     }
     
@@ -321,10 +357,44 @@ public class Game
         lab.setKey("LabKeyCard");
         LockedRoom elevator = (LockedRoom) map.get("Elevator");
         elevator.unlock();
+        
+        System.out.println("A buzzing noise followed by a pop starts from the fuse box.");
+        System.out.println("A feint screech of metal comes from the direction of the basement.");
+        System.out.println("(The elevator now works)");
     }
     
-    private void getCaseFiles(){
-        
+    public void getCaseFiles() throws IOException{        
+        System.out.println("You used the key to open the cabinet and look inside.");
+        System.out.println("Manilla envelopes inked with red are lined up to the back.");
+        System.out.println("In the middle is a thick folder with \""+name+"\" on the front.");
+        System.out.println("You open it.");
+        System.out.println("[PRESS ENTER]");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("----------------------------------------");
+        System.out.println("Inside is a new copy of the newspaper from before.");
+        System.out.println("It reads: KILLER STILL ON THE RUN IN WORLD OF ZUUL");
+        System.out.println(name+" is a victim of multi-personality disorder");
+        System.out.println("who has been traveling to lesser-known hospitals");
+        System.out.println("for two months now. "+name+" visits the hospitals");
+        System.out.println("and has killed the entirety of their staff every time.");
+        System.out.println();
+        System.out.println("If you see this dangerous person, or have any");
+        System.out.println("information on them, call 911 immediately and stay away!");
+        System.out.println("-----------------------------------------");
+        System.out.println("[PRESS ENTER]");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("You put away the newspaper and close the file cabinet");
+        System.out.println("Below it is a key you didn't notice before. You pick it up.");
+        hero.addItem(new Item("HospitalKey", 0.01, true));        
+        System.out.println("*banging noise in lobby*");
     }
     
     /** 
@@ -355,6 +425,7 @@ public class Game
             hero.setRoom(currentRoom.getTitle());
             System.out.println(currentRoom.getLongDescription());
             unhide(hero);
+            checkFightTrigger(hero);
         } else {
             System.out.println("You cannot enter this room");
             System.out.println(nextRoom.getRequirements());
@@ -373,8 +444,7 @@ public class Game
             System.out.println(player.getName() + player.hide());
         } else {
             System.out.println("You are already hidding.");
-        }
-        
+        }        
     }
     private void unhide(Player player){
         if (player.isHidden()){
@@ -443,14 +513,12 @@ public class Game
      */
     private void changeLockTo(Player player, Command command, boolean locking){
         if (!command.hasSecondWord()){
-            System.out.println("Unlock what?");
+            System.out.println("Use a key for what?");
             return;
         } 
         
         currentRoom = map.get(player.getRoom());
-        Room chosenRoom = currentRoom.getExit((command.getSecondWord()));
-        boolean isNeighbor = false;
-        boolean playerHasKey = false;
+        Room chosenRoom = currentRoom.getExit(command.getSecondWord());
         if (chosenRoom == null) {
             System.out.println("There's no room to unlock there!");
             return;
@@ -460,13 +528,13 @@ public class Game
         }
 
         LockedRoom lockedRoom = (LockedRoom)chosenRoom;
-        isNeighbor = true;
         String keyNeeded = lockedRoom.getKey();
-        playerHasKey = player.has(keyNeeded);
         
-        if (isNeighbor && playerHasKey){
+        if (player.has(keyNeeded)){
             if (!locking){System.out.println(lockedRoom.unlock());
             } else {System.out.println(lockedRoom.lock());}
+        } else {
+            System.out.println("You don't have the key to unlock this room.");
         }
     }
     
@@ -496,14 +564,18 @@ public class Game
      */
     private void checkFightTrigger(Player player){
         String playerRoom = player.getRoom();
-        for (String name : characters.keySet()){
-            Player character = characters.get(name);
-            if (character instanceof NPC) {
-                // This accounts for the character being the hero (a Player)
-                NPC opponent = (NPC)character;
-                boolean inSameRoom = playerRoom.equals(opponent.getRoom());
-                if (!player.isHidden() && inSameRoom && opponent.isAggro()) {triggerFight(player, opponent);}
+        if (player.getHealth() > 0) {
+            for (String name : characters.keySet()){
+                Player character = characters.get(name);
+                if (character instanceof NPC) {
+                    // This accounts for the character being the hero (a Player)
+                    NPC opponent = (NPC)character;
+                    boolean inSameRoom = playerRoom.equals(opponent.getRoom());
+                    if (!player.isHidden() && inSameRoom && opponent.isAggro()) {triggerFight(player, opponent);}
+                }
             }
+        } else {
+            // player is dead no more fighting
         }
     }
     
@@ -514,17 +586,22 @@ public class Game
     private void triggerFight(Player player, NPC opponent){
         FightScene fight = new FightScene();
         fight.killerEncounter(player, opponent);
+        opponent.pacify();
     }
     
     // Environment actions
     /**
-     * The player has won if he meets all the conditions.
-     * Prints out the winning message and ends the play loop.
-     * @return boolean quit the game
+     * End game
      */
-    private boolean winGame(){
-        // Not sure when this is triggered or when it will meet the right conditions
-        return true;
+    public void winGame(){
+        System.out.println("You exit the hospital to find yourself surronded by police.");
+        System.out.println("You are tackled to the ground and your hands are cuffed.");
+        System.out.println("The last thing you can remember is getting pushed into");
+        System.out.println("the back of a car before blacking out.");
+        System.out.println("----------------------------------------");
+        System.out.println("You find out about your entire criminal record.");
+        System.out.println("You're going to serve over 3 lifetimes in prison.");
+        System.out.println("Good job... You win?");
     }
     
     /**
@@ -532,24 +609,27 @@ public class Game
      * Then checks for a fight
      */
     private void moveNPC(){
-        Room npcRoom = map.get(villain.getRoom());
-        String[] exits = npcRoom.getExitDirections();
-        if (exits.length == 0) {System.out.println("Villain is stuck"); return;}
-        
-        int choice = rng.nextInt(exits.length);
-        String randomDirection = exits[choice];
-        
-        Room nextRoom = npcRoom.getExit(randomDirection);
-        if (nextRoom != null && nextRoom.meetsRequirements()) {
-            villain.setRoom(nextRoom.getTitle());
-        } else {
-            // Villain can't get in room and is making noise
-            System.out.println("*banging noise nearby*");
+        for (NPC killer : characters.values()) {
+            if (killer.moves()){
+                Room npcRoom = map.get(killer.getRoom());
+                String[] exits = npcRoom.getExitDirections();
+                if (exits.length == 0) {System.out.println("Killer is stuck"); return;}
+                
+                int choice = rng.nextInt(exits.length);
+                String randomDirection = exits[choice];
+                
+                Room nextRoom = npcRoom.getExit(randomDirection);
+                if (nextRoom != null && nextRoom.meetsRequirements()) {
+                    killer.setRoom(nextRoom.getTitle());
+                } else {
+                    // Villain can't get in room and is making noise
+                    System.out.println("*banging noise nearby*");
+                }
+            } else {
+                // nothing should happen (NPC can't move)
+            }
+            checkFightTrigger(hero);
         }
-        
-        // For testing, shows where villain is
-        //System.out.println("Villain is in " + villain.getRoom());
-        checkFightTrigger(hero);
     }
     
     /**
@@ -558,9 +638,7 @@ public class Game
      */
     private void makeCharacters(){
         hero = new Player("Hero", "PatientCare");
-        villain = new NPC("Villain", "Lobby", true);
-        
-        characters.put(hero.getName(), hero);
+        NPC villain = new NPC("Villain", "Lobby", true);
         characters.put(villain.getName(), villain);
     }
     
@@ -643,7 +721,7 @@ public class Game
                         if (line.hasNext()){
                             roomName = line.next();
                             Room exitRoom = map.get(roomName);
-                            if (roomName != null) {
+                            if (map.get(roomName) != null) {
                                 mainRoom.setExit(direction, exitRoom);
                             } else {
                                 System.out.println("@"+lineNumber+": On command \"exit\" during init, exit room ("+roomName+") doesn't exist.");

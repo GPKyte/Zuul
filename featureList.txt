@@ -8,18 +8,15 @@ D-Level
 
 C-Level
 	The player can carry items up to a certain weight
-	~~~ The player can win
+	The player can win
 	The player can go "back" to the last visited room
 	There are several new commands. At least two of which take a second word.
 
 B-Level
-	~~~ Time limit
+	Time limit is set to 40 turns, then it releases 20 cops into the lobby
 	There are locked rooms
-	~~~ Magic transporter room
+	A keg item gets the player drunk and they end up several steps ahead at the cost of health. (Beamer)	
 
 A-Level
 	~ NPC villain the moves randomly (Need to include a chatter bot, and some other NPC)
-	~~~ Read the game setup from external file with error checking and output
-
-
-Z-Level
+	Read the game setup from external file with error checking and output

@@ -75,7 +75,11 @@ public class Room
      * @return A long description of this room
      */
     public String getLongDescription(){
-        return "You are in " + title + ". " + description + "\n" + getExitString();
+        String longDesc = "You are in " + title + ". " + description + "\n" + getExitString();
+        if (itemList.size() > 0){
+            longDesc += "\n" + listItems();
+        }
+        return longDesc;
     }
 
     /**
@@ -121,9 +125,14 @@ public class Room
      * @return String listing items in room.
      */
     public String listItems(){
-        String listOfItems = title + " has:"; 
-        for (String itemName : itemList.keySet()){
-            listOfItems += " " + itemName;
+        String listOfItems = title + " has:";
+        
+        if (itemList.size() > 0){
+            for (String itemName : itemList.keySet()){
+                listOfItems += " " + itemName;
+            }
+        } else {
+            listOfItems += " nothing";
         }
         return listOfItems;
     }

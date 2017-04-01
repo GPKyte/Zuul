@@ -1,0 +1,86 @@
+3/13/17
+6:30 PM Discussed layout and scope with Gavin
+discussed ideas
+left at 8:15 PM
+Created a Github account at 10:00 PM
+
+3/16/17
+4:30 PM Completed the "Killer mingame" idea.
+	Rock/paper/scissors style combat system with health and 4 options (Strike/Block/Feint/Parry)
+	Loser of each round takes damage based on what item the winner is using. Parry only wins against Strike, but does additional damage
+
+9:20 PM Met with Gavin
+Discussed game.Java
+Created an item class
+mapped out rooms
+10:15 PM Ran into an issue: We didn't know what we wanted to start with (Priorities - Rooms/classes/items)
+10:23 PM Talked about the "Killer" NPC and how the AI will move/how the location is determined. Had an idea to make it a boolean switch
+My design would have the NPC choose a random valid door each turn excluding the direction it just entered from unless it is the only valid move.
+Thought about changing the boolean idea because there could be an easier way to check
+10:33 PM Talked about using switch/case and multi-word-phrases in parser
+Moved focus back to game class and layout
+10:41 PM Worked on description of the game/how to win
+10:50 PM talked about ideas for character builds
+11:00 PM Agreed to meet Gavin tomorrow to work more.
+Left Alter
+
+3/17/17
+3:00 PM Met up with Gavin
+3:05 PM Talk about changing the way rooms and exits to room will be stored.
+3:11 PM Moving focus back to game.java
+3:20 PM started adding rooms
+3:28 PM We talked about creating a map class and using that to store the hashmap and all of the rooms/items/etc. This would allow us to create multiple maps
+and swap the maps out while using game.java as the engine.
+3:50 PM Created map class after editing Game.
+
+3/19/17
+Got fully set up on github
+3/22/17
+6:30 PM Made the killer minigame.
+8:30 PM Finished.
+
+3/23/17
+4:00 PM Worked on item class Created methods to get the name, weight, and if the item can be picked
+up. Also added a way for items to be updated.
+4:50 PM Minigame edit: Damage is now calculated for both player and killer. Damage = weaponPower * Health/10
+5:18 PM Documentation added to minigame
+
+3/24/17
+Fixes to clonflicts caused by java.bluej in the package
+updated minigame and items to use float.
+
+3/24/17
+3:30 PM changed float to double for better accuracy
+3:40 PM ran into more conflicts while attempting to merge.
+
+3/26/17
+9:00 PM Met up with Gavin to discuss the project some more
+10:30 PM Left the lab. I am going to work on minigame and deciding the room arrangement.
+
+3/27/17
+3:00 PM
+Added description to Item/weapon
+Edited minigame
+Added gethealth methods for player/NPC
+finished at 3:50 PM
+4:00 Fixed error with minigame
+5:30 finished drawing the map.
+10:30 Gavin came over and we worked on fixing merging errors on github.
+
+3/28/17
+1:05 AM Gavin left
+1:45 AM I finished adding all my code back to the up-to-date code and submitted a pull request.
+1:46 AM Collapsed from exhaustion.
+
+3/29/17
+3:40 PM fixed error caused by FightScene missing parameters
+Added some items/weapons and some rooms.
+5:40 PM Pull request
+
+3/30/17
+8:00 - 11:11 PM
+Worked on project, Had issues merging, had to reclone project from github. edited minigame, started adding exits to rooms that have been mapped out.
+
+3/31/17
+3:00 PM - 11:20 PM
+Worked with Gavin in the lab. We were not using Github collaboration. I was working mostly on the .init to add items, exits and plot (pretty much the only things our zuul was missing)
