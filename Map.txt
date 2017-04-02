@@ -1,0 +1,118 @@
+Game game = new Game();
+game.displayMapFull();
+MAP
+-----------------------------
+-----------------------------
+Office
+    Exits: north 
+    Office has: CabinetKey
+-----------------------------
+Bathroom
+    Exits: west stall 
+    Bathroom has: pipe
+-----------------------------
+Basement
+    Exits: elevator stairs west 
+    Basement has: nothing
+-----------------------------
+Stall
+    Exits: bathroom 
+    Stall has: bleach MainOfficeKey
+-----------------------------
+BreakRoom
+    Exits: east west 
+    BreakRoom has: keg
+-----------------------------
+Stairs-2F
+    Exits: south up down 
+    Stairs-2F has: nothing
+-----------------------------
+Courtyard
+    Exits: east south north 
+    Courtyard has: nothing
+-----------------------------
+Stairs-B1F
+    Exits: basement up 
+    Stairs-B1F has: nothing
+-----------------------------
+Roof
+    Exits: elevator 
+    Roof has: GiftShopKey
+-----------------------------
+Hallway-A
+    Exits: east stairs north west 
+    Hallway-A has: nothing
+-----------------------------
+Hallway-B
+    Exits: east elevator north west 
+    Hallway-B has: nothing
+-----------------------------
+Lobby
+    Exits: east elevator south north stairs west 
+    Lobby has: nothing
+-----------------------------
+ControlRoom
+    Exits: east 
+    ControlRoom has: FuseBox
+-----------------------------
+ParkingLot
+    Exits: north 
+    ParkingLot has: nothing
+-----------------------------
+Hallway-C
+    Exits: east stairs 
+    Hallway-C has: nothing
+-----------------------------
+Hallway-D
+    Exits: elevator west 
+    Hallway-D has: nothing
+-----------------------------
+Elevator
+    Exits: basement roof floor2 lobby floor3 
+    Elevator has: nothing
+-----------------------------
+JanitorCloset
+    Exits: south 
+    JanitorCloset has: ControlKey mop
+-----------------------------
+XRay
+    Exits: south 
+    XRay has: LaserGun
+-----------------------------
+GiftShop
+    Exits: south 
+    GiftShop has: LabKeyCard
+-----------------------------
+MainOffice
+    Exits: south 
+    MainOffice has: cabinet
+-----------------------------
+PatientCare
+    Exits: east 
+    PatientCare has: nothing
+-----------------------------
+Stairs-1F
+    Exits: lobby up down 
+    Stairs-1F has: nothing
+-----------------------------
+Stairs-3F
+    Exits: south down 
+    Stairs-3F has: nothing
+-----------------------------
+Lab
+    Exits: east south west 
+    Lab has: chemicals
+-----------------------------
+ER
+    Exits: west 
+    ER has: kidney scalpel
+-----------------------------
+Kitchen
+    Exits: east west 
+    Kitchen has: nothing
+-----------------------------
+Cafeteria
+    Exits: north 
+    Cafeteria has: knife BasementKey
+-----------------------------
+-----------------------------

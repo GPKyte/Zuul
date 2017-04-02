@@ -7,11 +7,11 @@ room . Stall A bathroom stall. A man is slumped against the wall and isn't breat
 room . Cafeteria A wide space filled with empty tables. Something smells rancid
 room locked Basement BasementKey a dark and damp place with air ducts and heating vents
 room . PatientCare A room with several well made beds and curtains half-drawn to segment the room. There is some blood splattered by the door.
-room . Roof The top of the hospital. You can see the main entrance from here.
+room . Roof The top of the hospital. A decapitated body is sitting by the roof edge, they appear to be holding something.
 room locked ControlRoom ControlKey A dark space with machines and what looks like a control panel
-room . BreakRoom Just your average break room. Maybe there is a sandwhich in the fridge you could steal.
+room . BreakRoom Just your average break room. Maybe there is a sandwich in the fridge you could steal.
 room locked Elevator power
-room locked MainOffice MainOfficeKey A room with lime green wallpaper. There is a coffee table in the center and chairs to go with it. There
+room locked MainOffice MainOfficeKey A room with lime green wallpaper. There is a coffee table in the center and chairs to go with it.
 room . ER The floor is stained with dried blood. Next a cooler, a pile of bodies lies in the corner.
 room . JanitorCloset It doesn't look like anyone's been in here for months. Things are scattered carelessly across the floor.
 room . Courtyard There is a pleasant breeze today. These birds are getting annoying though.
@@ -68,7 +68,7 @@ exit Office north Lab
 
 // other
 
-exit Basement elevator Elevator west ControlRoom
+exit Basement elevator Elevator west ControlRoom stairs Stairs-B1F
 exit Elevator lobby Lobby basement Basement roof Roof floor2 Hallway-B floor3 Hallway-D
 exit Roof elevator Elevator
 exit Stairs-B1F basement Basement up Stairs-1F
@@ -86,6 +86,7 @@ add . Office CabinetKey .01 true
 add . JanitorCloset ControlKey .01 true
 add . Stall  MainOfficeKey .01 true
 add . GiftShop LabKeyCard .01 true
+add . Roof GiftShopKey .01 true
 add weapon JanitorCloset mop 10 true 10
 add . MainOffice cabinet 80 false
 add . Lab chemicals 5 true

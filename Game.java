@@ -56,7 +56,7 @@ public class Game
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
         int turns = 0;
-        int timeLimit = 35;
+        int timeLimit = 70;
         boolean notTriggered = true;
         boolean finished = false;
         while (! finished && (hero.getHealth() > 0)){
@@ -166,7 +166,6 @@ public class Game
         name = s.nextLine();
         System.out.println();
         System.out.println("After standing up, you take a look around");
-        System.out.println();
         System.out.println(currentRoom.getLongDescription());
     }
     

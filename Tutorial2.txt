@@ -1,0 +1,248 @@
+Game game1 = new Game();
+game1.play();
+> go east
+> go north
+> take LaserGun
+> equip LaserGun
+> go south
+> go east
+> go east
+> go east
+> go north
+> take ControlKey
+> go south
+> go west
+> go west
+> go west
+> go stairs
+A wild killer appears!
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+> go south
+> go stairs
+> go down
+> go lobby
+> go west
+> go south
+> take BasementKey
+> go north
+> go east
+> go east
+> go stall
+> take MainOfficeKey
+> go bathroom
+> go west
+> go stairs
+> go down
+> unlock basement
+> go basement
+> unlock west
+> go west
+> use FuseBox
+> go elevator
+> go east
+> go elevator
+> go roof
+> take GiftShopKey
+> go elevator
+> go lobby
+> go west
+> unlock north
+> go north
+> take LabKeyCard
+> go south
+> go east
+> go elevator
+> go floor2
+> go elevator
+> go floor3
+Exits: elevator west
+> unlock west
+
+Room unlocked
+> go west
+
+You are in Lab. The testing tables are still covered with tubes of glass and the room stinks of chemicals. The lights are bright. 
+Exits: east south west
+Lab has: chemicals
+> go south
+
+You are in Office. A small space crowded with paperwork and lined with file cabinets in the back 
+Exits: north
+Office has: CabinetKey
+> take CabinetKey
+
+You took CabinetKey
+> go north
+
+You are in Lab. The testing tables are still covered with tubes of glass and the room stinks of chemicals. The lights are bright. 
+Exits: east south west
+Lab has: chemicals
+> go east
+
+You are in Hallway-D. 
+Exits: elevator west
+> go elevator
+
+You are in Elevator. 
+Exits: basement roof floor2 lobby floor3
+> go lobby
+
+You are in Lobby. The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs. 
+Exits: east elevator south north stairs west
+> unlock north
+
+Room unlocked
+> go north
+
+You are in MainOffice. A room with lime green wallpaper. There is a coffee table in the center and chairs to go with it. There 
+Exits: south
+MainOffice has: cabinet
+> use cabinet
+
+You used the key to open the cabinet and look inside.
+Manilla envelopes inked with red are lined up to the back.
+In the middle is a thick folder with "GAVIN" on the front.
+You open it.
+[PRESS ENTER]
+
+----------------------------------------
+Inside is a new copy of the newspaper from before.
+It reads: KILLER STILL ON THE RUN IN WORLD OF ZUUL
+GAVIN is a victim of multi-personality disorder
+who has been traveling to lesser-known hospitals
+for two months now. GAVIN visits the hospitals
+and has killed the entirety of their staff every time.
+
+If you see this dangerous person, or have any
+information on them, call 911 immediately and stay away!
+-----------------------------------------
+[PRESS ENTER]
+
+You put away the newspaper and close the file cabinet
+Below it is a key you didn't notice before. You pick it up.
+*banging noise in lobby*
+> inventory
+
+You're carrying: HospitalKey LaserGun BasementKey CabinetKey LabKeyCard ControlKey GiftShopKey MainOfficeKey
+> go south
+
+You are in Lobby. The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs. 
+Exits: east elevator south north stairs west
+> Now I'm going to show the other commands
+
+I don't know what you mean...
+> help
+
+You are lost. You are alone.
+You wander around the hospital.
+
+Your command words are:
+go  quit  help  back  drop  take  i  inventory  look  unlock  lock  equip  fight  talk  hide  unhide  use  
+> drop CabinetKey
+
+You dropped CabinetKey
+> look
+
+Lobby
+Exits: east elevator south north stairs west
+Lobby has: CabinetKey
+Time limit reached
+The cops break down the door and flood the lobby
+Good luck, criminal. (Try to win to find out why)
+> hide
+
+Hero is hiding
+*banging noise nearby*
+*banging noise nearby*
+*banging noise nearby*
+> unlock south
+
+Room unlocked
+> The time limit was reached, now I'm going to complete the game by going outside.
+
+I don't know what you mean...
+> go south
+
+You are in ParkingLot. Flashing red and blue lights can be seen on every car. There are at least 20 of them surrounding the hospital. 
+Exits: north
+Hero no longer hidden.
+A wild killer appears!
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer tries to block.
+The killer blocks your strike and counters it.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer takes a strike at you.
+Both attacks miss.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer attempts to feint.
+The killer is caught off guard by your strike.
+Your Health: 65.0  Killer's Health: -64905.850000000006
+You defeated the wild killer!
+A wild killer appears!
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer tries to block.
+The killer blocks your strike and counters it.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer takes a strike at you.
+Both attacks miss.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer attempts to feint.
+The killer is caught off guard by your strike.
+Your Health: 65.0  Killer's Health: -64905.850000000006
+You defeated the wild killer!
+A wild killer appears!
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer tries to block.
+The killer blocks your strike and counters it.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer takes a strike at you.
+Both attacks miss.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer attempts to feint.
+The killer is caught off guard by your strike.
+Your Health: 65.0  Killer's Health: -64905.850000000006
+You defeated the wild killer!
+You exit the hospital to find yourself surronded by police.
+You are tackled to the ground and your hands are cuffed.
+The last thing you can remember is getting pushed into
+the back of a car before blacking out.
+----------------------------------------
+You find out about your entire criminal record.
+You're going to serve over 3 lifetimes in prison.
+Good job... You win?
+Thank you for playing. Good bye.

@@ -1,0 +1,303 @@
+Game game1 = new Game();
+game1.play();
+
+You wake up in a hospital bed. You're mouth is parched, and you smell bleach in the air.
+Looking down you see a torn and crumpled newspaper.
+It reads "...ILLER STILL ON THE R...W...ZUUL...type "help" if you need it"
+On your wrist is a white band with your name.
+It's blurry though. What does it say?
+Name: Aaron
+
+After standing up, you take a look around
+
+You are in PatientCare. A room with several well made beds and curtains half-drawn to segment the room. There is some blood splattered by the door. 
+Exits: east
+> go east
+
+You are in Hallway-A. There is a peculiar trail of blood leading from the room you woke up in to the stairs. 
+Exits: east stairs north west
+*banging noise nearby*
+> go north
+
+You are in XRay. Nothing apart from the table and strange tools stand out in this room. It seems to be normal. 
+Exits: south
+XRay has: LaserGun
+*banging noise nearby*
+> take LaserGun
+
+You took LaserGun
+> equip LaserGun
+
+LaserGun is equipped
+> go south
+
+You are in Hallway-A. There is a peculiar trail of blood leading from the room you woke up in to the stairs. 
+Exits: east stairs north west
+> go east
+
+You are in BreakRoom. Just your average break room. Maybe there is a sandwhich in the fridge you could steal. 
+Exits: east west
+BreakRoom has: keg
+> go east
+
+You are in Kitchen. You can see were meals were made. The sink is full of dirty dishes and the room reeks with a foul odor. 
+Exits: east west
+> go east
+
+You are in Hallway-B. 
+Exits: east elevator north west
+> go east
+
+You are in ER. The floor is stained with dried blood. Next a cooler, a pile of bodies lies in the corner. 
+Exits: west
+ER has: kidney scalpel
+> take kidney
+
+You took kidney
+> go west
+
+You are in Hallway-B. 
+Exits: east elevator north west
+> go west
+
+You are in Kitchen. You can see were meals were made. The sink is full of dirty dishes and the room reeks with a foul odor. 
+Exits: east west
+A wild killer appears!
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer tries to block.
+The killer blocks your strike and counters it.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+1
+You prepare to strike.
+The killer tries to block.
+The killer blocks your strike and counters it.
+Your Health: 30.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+
+Invalid move. Choose 1, 2, 3, or 4
+1
+You prepare to strike.
+The killer tries to block.
+The killer blocks your strike and counters it.
+Your Health: -5.0  Killer's Health: 100.0
+You died.
+Kidney used for resurrection!
+You gain another chance for using the dark arts.
+A wild killer appears!
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+2
+You get ready to block.
+The killer tries to block.
+Neither of you move.
+Your Health: 100.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+2
+You get ready to block.
+The killer attempts to feint.
+You fall for the killer's bluff and take a hit.
+Your Health: 65.0  Killer's Health: 100.0
+What will you do?
+[1] Strike   [2] Block   [3] Feint   [4] Parry
+3
+You attempt to feint.
+The killer tries to block.
+The killer is caught off guard by your bluff and you land a strike.
+Your Health: 65.0  Killer's Health: -64905.850000000006
+You defeated the wild killer!
+> go west
+
+You are in BreakRoom. Just your average break room. Maybe there is a sandwhich in the fridge you could steal. 
+Exits: east west
+BreakRoom has: keg
+> use keg
+
+You drink from the keg and gag at the rancid taste.
+The room starts spinning and dims to black. What did you drink?
+...(Health Reduced to: 75.0)...
+Mouth dry, eyes itchy, back stiff, you wake up on a concrete floor.
+Something jangles in your pocket when you stand up.
+You are in Basement. a dark and damp place with air ducts and heating vents 
+Exits: elevator west
+> unlock west
+
+Room unlocked
+> go west
+
+You are in ControlRoom. A dark space with machines and what looks like a control panel 
+Exits: east
+ControlRoom has: FuseBox
+> use FuseBox
+
+A buzzing noise followed by a pop starts from the fuse box.
+A feint screech of metal comes from the direction of the basement.
+(The elevator now works)
+> go east
+
+You are in Basement. a dark and damp place with air ducts and heating vents 
+Exits: elevator west
+> go elevator
+
+You are in Elevator. 
+Exits: basement roof floor2 lobby floor3
+> go roof
+
+You are in Roof. The top of the hospital. There is a corpse that is holding on to something near the edge. 
+Exits: elevator
+Roof has: GiftShopKey
+> take GiftShopKey
+
+You took GiftShopKey
+> go elevator
+
+You are in Elevator. 
+Exits: basement roof floor2 lobby floor3
+> go lobby
+
+You are in Lobby. The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs. 
+Exits: east elevator south north stairs west
+> go east
+
+You are in Bathroom. A pristinely white bathroom with chrome stalls and counters. It reeks of bleach. 
+Exits: west stall
+Bathroom has: pipe
+> go stall
+
+You are in Stall. A bathroom stall. A man is slumped against the wall and isn't breathing. He may be dead. 
+Exits: bathroom
+Stall has: bleach MainOfficeKey
+> take MainOfficeKey
+
+You took MainOfficeKey
+> go bathroom
+
+You are in Bathroom. A pristinely white bathroom with chrome stalls and counters. It reeks of bleach. 
+Exits: west stall
+Bathroom has: pipe
+> go west
+
+You are in Lobby. The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs. 
+Exits: east elevator south north stairs west
+> go west
+
+You are in Courtyard. There is a pleasant breeze today. These birds are getting annoying though. 
+Exits: east south north
+> unlock north
+
+Room unlocked
+> go north
+
+You are in GiftShop. The shelves are line up with lots of toys, pillows, and mugs. Something about this shop doesn't feel right. 
+Exits: south
+GiftShop has: LabKeyCard
+> take LabKeyCard
+
+You took LabKeyCard
+> go south
+
+You are in Courtyard. There is a pleasant breeze today. These birds are getting annoying though. 
+Exits: east south north
+> go east
+
+You are in Lobby. The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs. 
+Exits: east elevator south north stairs west
+> go elevator
+
+You are in Elevator. 
+Exits: basement roof floor2 lobby floor3
+> go floor3
+
+You are in Hallway-D. 
+Exits: elevator west
+> unlock west
+
+Room unlocked
+> go west
+
+You are in Lab. The testing tables are still covered with tubes of glass and the room stinks of chemicals. The lights are bright. 
+Exits: east south west
+Lab has: chemicals
+> go south
+
+You are in Office. A small space crowded with paperwork and lined with file cabinets in the back 
+Exits: north
+Office has: CabinetKey
+> take CabinetKey
+
+You took CabinetKey
+> go north
+
+You are in Lab. The testing tables are still covered with tubes of glass and the room stinks of chemicals. The lights are bright. 
+Exits: east south west
+Lab has: chemicals
+> go east
+
+You are in Hallway-D. 
+Exits: elevator west
+> go elevator
+
+You are in Elevator. 
+Exits: basement roof floor2 lobby floor3
+> go lobby
+
+You are in Lobby. The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs. 
+Exits: east elevator south north stairs west
+> unlock north
+
+Room unlocked
+> go north
+
+You are in MainOffice. A room with lime green wallpaper. There is a coffee table in the center and chairs to go with it. There 
+Exits: south
+MainOffice has: cabinet
+> use cabinet
+
+You used the key to open the cabinet and look inside.
+Manilla envelopes inked with red are lined up to the back.
+In the middle is a thick folder with "Aaron" on the front.
+You open it.
+[PRESS ENTER]
+
+----------------------------------------
+Inside is a new copy of the newspaper from before.
+It reads: KILLER STILL ON THE RUN IN WORLD OF ZUUL
+Aaron is a victim of multi-personality disorder
+who has been traveling to lesser-known hospitals
+for two months now. Aaron visits the hospitals
+and has killed the entirety of their staff every time.
+
+If you see this dangerous person, or have any
+information on them, call 911 immediately and stay away!
+-----------------------------------------
+[PRESS ENTER]
+
+You put away the newspaper and close the file cabinet
+Below it is a key you didn't notice before. You pick it up.
+*banging noise in lobby*
+> go south
+
+You are in Lobby. The main Entrance to the Hospital. It has seen better days. A trail of blood connects the main entrance to the stairs. 
+Exits: east elevator south north stairs west
+> unlock south
+
+Room unlocked
+> go south
+
+You are in ParkingLot. Flashing red and blue lights can be seen on every car. There are at least 20 of them surrounding the hospital. 
+Exits: north
+You exit the hospital to find yourself surronded by police.
+You are tackled to the ground and your hands are cuffed.
+The last thing you can remember is getting pushed into
+the back of a car before blacking out.
+----------------------------------------
+You find out about your entire criminal record.
+You're going to serve over 3 lifetimes in prison.
+Good job... You win?
+Thank you for playing. Good bye.
