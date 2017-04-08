@@ -21,21 +21,33 @@ public class LockedRoom extends Room
         roomReqs = "You need the " + keyToUnlock + " to unlock this room.";
     }
     
+    
+    // Requirements
     /**
+     * Tells whether the room can be entered
      * @return boolean whether the room can be entered
      */
     public boolean meetsRequirements(){
         return !isLocked;
     }
-
     /**
+     * Shows what needs to be done to get in
      * @return String returns the name of the key to unlock room
      */
     public String getRequirements(){        
         roomReqs = "You need the " + keyToUnlock + " to unlock this room.";
         return roomReqs;
+    }        
+    /**
+     * Used during events to change room requiremets
+     * @param String description of new reqs
+     */
+    public void setRequirements(String newReqs){
+        this.roomReqs = newReqs;
     }
 
+    
+    // Change state
     /**
      * Unlocks the room if the player is holding the key object
      * that has been linked to this room.
@@ -45,7 +57,6 @@ public class LockedRoom extends Room
         isLocked = false;
         return "Room unlocked";
     }
-
     /**
      * Locks the room if the player is holding the key object
      * that has been linked to this room.
@@ -55,16 +66,21 @@ public class LockedRoom extends Room
         isLocked = true;
         return "Room locked.";
     }
-
+    
+    
+    // Key
+    /**
+     * Sets the name of the key/thing needed to open the room
+     * @param String name of key or global status
+     */
     public void setKey(String key){
         this.keyToUnlock = key;
     }
-    
+    /**
+     * Gives the name of key/thing needed to open room
+     * @return String name of key
+     */
     public String getKey(){
         return keyToUnlock;
-    }        
-        
-    public void setRequirements(String newReqs){
-        this.roomReqs = newReqs;
     }
 }

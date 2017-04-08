@@ -2,24 +2,21 @@ import java.util.Set;
 import java.util.HashMap;
 
 /**
- * Class Room - a room in an adventure game.
- *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
- *
- * A "Room" represents one location in the scenery of the game.  It is 
- * connected to other rooms via exits.  For each existing exit, the room 
- * stores a reference to the neighboring room.
+ * Class Room is a room in an adventure game
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * This is used in an application name Zuul,
+ * based off of a textbook example described
+ * in the README of this project
+ * 
+ * @author  Gavin Kyte and Aaron Chauvette
+ * @version 2017.04.08
  */
 
 public class Room 
 {
     private String description;
     private String title;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    private HashMap<String, Room> exits;
     private HashMap<String, Item> itemList;
 
     /**
@@ -35,31 +32,23 @@ public class Room
         itemList = new HashMap<>();
     }
 
-    /**
-     * Define an exit from this room.
-     * @param direction The direction of the exit.
-     * @param neighbor  The room to which the exit leads.
-     */
-    public void setExit(String direction, Room neighbor){
-        exits.put(direction, neighbor);
-    }
-
+    
+    
+    // Room info
     /**
      * Return title of room
      * @return Room's title
      */
     public String getTitle(){
         return title;
-    }
-    
+    }    
     /**
      * Get content description for looking around room
      * @return String two lines with exits and items in room
      */
     public String look(){
         return getExitString() + "\n" + listItems();
-    }
-    
+    }    
     /**
      * @return The short description of the room
      * (the one that was defined in the constructor).
@@ -67,7 +56,6 @@ public class Room
     public String getShortDescription(){
         return description;
     }
-
     /**
      * Return a description of the room in the form:
      *     You are in the kitchen.
@@ -75,17 +63,34 @@ public class Room
      * @return A long description of this room
      */
     public String getLongDescription(){
-        String longDesc = "You are in " + title + ". " + description + "\n" + getExitString();
+        // Puts the description on newline unless it is blank
+        if (!description.equals("")){
+            description = "\n " + description;
+        }
+        
+        // Creates long description
+        String longDesc = "You are in the " + title + ". " + description + "\n" + getExitString();
         if (itemList.size() > 0){
             longDesc += "\n" + listItems();
         }
         return longDesc;
     }
+    
 
+    
+    // Exit related
+    /**
+     * Define an exit from this room.
+     * @param direction The direction of the exit.
+     * @param neighbor  The room to which the exit leads.
+     */
+    public void setExit(String direction, Room neighbor){
+        exits.put(direction, neighbor);
+    }    
     /**
      * Return a string describing the room's exits, for example
      * "Exits: north west".
-     * @return Details of the room's exits.
+     * @return String of room's exits
      */
     private String getExitString(){
         String returnString = "Exits:";
@@ -95,9 +100,8 @@ public class Room
         }
         return returnString;
     }
-
     /**
-     * Provides list of exits determined by the keys of exits HashMap
+     * Provides array of exits determined by the keys of exits HashMap
      * @return Array containing available exit directions
      */
     public String[] getExitDirections(){
@@ -108,8 +112,7 @@ public class Room
             i++;
         }
         return allExits;
-    }
-        
+    }        
     /**
      * Return the room that is reached if we go from this room in direction
      * "direction". If there is no room in that direction, return null.
@@ -118,8 +121,11 @@ public class Room
      */
     public Room getExit(String direction){
         return exits.get(direction);
-    }
+    }    
     
+    
+    
+    // Item specific
     /**
      * Returns list of items contained in room.
      * @return String listing items in room.
@@ -135,16 +141,25 @@ public class Room
             listOfItems += " nothing";
         }
         return listOfItems;
-    }
-    
+    }    
     /**
      * Tells whether the room contains an object or not
+     * @param String name of item
      * @return boolean contains item or not
      */
     public boolean contains(String itemName){
         return (itemList.get(itemName) != null);
-    }
-    
+    }    
+    /**
+     * Returns the item without removing it from room
+     * @param String name of item
+     * @return Item if it exists/is in room
+     */
+    public Item getItem(String itemName){
+        Item item = null;
+        if (contains(itemName)) {item = itemList.get(itemName);}
+        return item;
+    }    
     /**
      * Adds an item to the room if it is not already in the room
      * @param Item to be stored
@@ -156,23 +171,36 @@ public class Room
             System.out.println("There is already a " + aItem.getName() + " in " + title);
         }
     }
-    
-    public Item remove(String itemName){
-        Item chosenItem = itemList.get(itemName);
-        itemList.remove(itemName);
+    /**
+     * Removes item from the room and returns it
+     * @return Item with name requested
+     */
+    public Item remove(String itemName){        
+        Item chosenItem = null;
+        if (itemList.containsKey(itemName)){
+            itemList.get(itemName);
+            itemList.remove(itemName);
+        }
         return chosenItem;
     }
     
-    public Item getItem(String itemName){
-        Item item = null;
-        if (contains(itemName)) {item = itemList.get(itemName);}
-        return item;
-    }
     
+    
+    // Special cases and reqs
+    /**
+     * Returns whether the room meets the
+     * requirements to enter
+     * @return boolean saying if you can enter
+     */
     public boolean meetsRequirements(){
         return true;
     }
-    
+    /**
+     * Returns the requirements to enter.
+     * There shouldn't be requirements to enter Room class,
+     * but the child classes might have some
+     * @return String for troubleshooting
+     */
     public String getRequirements(){
         return "This room has no requirements or isn't fully implemented. You should not see this message";
     }

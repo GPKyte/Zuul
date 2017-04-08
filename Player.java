@@ -10,7 +10,6 @@ import java.util.ArrayList;
  */
 public class Player
 {
-    // instance variables
     private String name;
     private String currentRoom;
     private double health;
@@ -28,17 +27,16 @@ public class Player
         this.name = name;
         currentRoom = roomName;
         health = 100;
-        weightLimit = 100.00;
+        weightLimit = 20.00;
         hidden = false;
         myWeapon = null;
         roomHistory = new ArrayList<>();
         bag = new HashMap<>();
     }
     
-    public void takeDamage(double damage){
-        health -= damage;
-    }
-
+    
+    
+    // Player Status
     /**
      * Gets the name of the player
      * @Return String player name
@@ -47,6 +45,61 @@ public class Player
         return name;
     }
     
+    /**
+     * @return boolean
+     */
+    public boolean isHidden(){
+        return hidden;
+    }
+    
+    /**
+     * Hides the player.
+     * @return String hidden status
+     */
+    public String hide(){
+        hidden = true;
+        return " is hiding";
+    }
+    
+    /**
+     * Player comes out of hiding.
+     * @return String hidden status
+     */
+    public String unhide(){
+        hidden = false;
+        return " no longer hidden.";
+    }
+    
+    
+    
+    // Health related
+    /**
+     * @return double Health of player
+     */
+    public double getHealth(){
+        return health;
+    }
+    
+    /**
+     * Sets health to some value. Used after player wins fight
+     * @param double Value of health
+     */
+    public void setHealth(double health){
+        this.health = health;
+    }
+    
+    /**
+     * Deducts the player's health by the given value
+     * @param double or int of damage
+     */
+    public void takeDamage(double damage){
+        health -= damage;
+    }
+
+    
+    
+    
+    // Room related
     /**
      * Gets current room name
      * @return String title of current room
@@ -71,16 +124,13 @@ public class Player
      */
     public String goBack(){
         if (roomHistory.size() == 0){return currentRoom;}
-        setRoom(roomHistory.get(roomHistory.size()-1));
-        // Uncomment the following lines of code to change method from going
-        // between same rooms, or from undoing roomHistory:
-        // roomHistory.remove(roomHistory.size()-1);
-        // roomHistory.remove(roomHistory.size()-1);
-        // Using two removes since setRoom will add the room you go back to.        
-        
+        setRoom(roomHistory.get(roomHistory.size()-1));        
         return currentRoom;
     }
     
+    
+    
+    // Item related
     /**
      * Returns contents of bag
      * @return Sring list of item names
@@ -130,49 +180,14 @@ public class Player
     public Item drop(String itemName){
         Item chosenItem = bag.get(itemName);
         bag.remove(itemName);
+        if (chosenItem.equals(myWeapon)){
+            myWeapon = null;
+        }
         return chosenItem;
     }
+   
     
-    /**
-     * @return double Health of player
-     */
-    public double getHealth(){
-        return health;
-    }
-    
-    /**
-     * Sets health to some value. Used after player wins fight
-     * @param double Value of health
-     */
-    public void setHealth(double health){
-        this.health = health;
-    }
-    
-    /**
-     * @return boolean
-     */
-    public boolean isHidden(){
-        return hidden;
-    }
-    
-    /**
-     * Hides the player.
-     * @return String hidden status
-     */
-    public String hide(){
-        hidden = true;
-        return " is hiding";
-    }
-    
-    /**
-     * Player comes out of hiding.
-     * @return String hidden status
-     */
-    public String unhide(){
-        hidden = false;
-        return " no longer hidden.";
-    }
-    
+    // Weapon specific
     /**
      * Choose an item to use as a weapon if it is a weapon
      * @return String status of equip

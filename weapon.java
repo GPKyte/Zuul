@@ -8,7 +8,6 @@
  */
 public class Weapon extends Item
 {
-    // instance variables - replace the example below with your own
     private double power;
 
     /**

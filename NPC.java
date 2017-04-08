@@ -20,24 +20,28 @@ public class NPC extends Player
         this.canMove = true;
     }
     
+    
+    // Interaction status
     /**
      * Tells if the NPC will attack on sight or not
      * @return boolean will attack
      */
     public boolean isAggro(){
         return this.isAggro;
-    }
-    
+    }   
+    /**
+     * Tells if the NPC can still move
+     * @return boolean canMove
+     */
     public boolean moves(){
         return this.canMove;
-    }
-    
+    }    
+    /**
+     * Stops movement and aggression,
+     * can still be fought
+     */
     public void pacify(){
         this.isAggro = false;
         this.canMove = false;
-    }
-    
-    public void takeDamage(double damage){
-        super.takeDamage(damage);
     }
 }

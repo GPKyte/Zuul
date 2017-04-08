@@ -8,7 +8,6 @@
  */
 public class Item
 {
-    // instance variables - replace the example below with your own
     private String name;
     private double weight;
     private boolean canTake;
@@ -23,15 +22,18 @@ public class Item
         this.canTake = canTake;
     }
     
+    // Accessors
+    public boolean canTake(){
+        return canTake;
+    }
     public String getName(){
         return name;
     }
     public double getWeight(){
         return weight;
     }
-    public boolean canTake(){
-        return canTake;
-    }
+    
+    // Mutators
     public void setName(String name){
         this.name = name;
     }
