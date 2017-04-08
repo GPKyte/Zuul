@@ -37,15 +37,29 @@ public class Game
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() throws IOException {
-        rng = new Random();
-        parser = new Parser();
-        name = "John Smith";
-        map = new HashMap<>();
-        characters = new HashMap<>();
-        makeCharacters();
-        worldInit(new Scanner(new BufferedReader(new FileReader("worldInit.txt"))).useDelimiter("\\n"));
-        currentRoom = map.get(hero.getRoom());
+    public Game() {
+        try {
+            rng = new Random();
+            parser = new Parser();
+            name = "John Smith";
+            map = new HashMap<>();
+            characters = new HashMap<>();
+            makeCharacters();
+            worldInit(new Scanner(new BufferedReader(new FileReader("worldInit.txt"))).useDelimiter("\\n"));
+            currentRoom = map.get(hero.getRoom());
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+            System.out.println("Game not created");
+        }
+    }
+    
+    /**
+     * Main method to play outside of BlueJ
+     * @param none
+     */
+    public static void main(String[] args){
+        Game zuul = new Game();
+        zuul.play();
     }
     
     /**
