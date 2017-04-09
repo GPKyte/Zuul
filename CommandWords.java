@@ -1,3 +1,4 @@
+import java.util.HashMap;
 /**
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a simple, text based adventure game.
@@ -11,40 +12,43 @@
 
 public class CommandWords
 {
-    // a constant array that holds all valid command words
-    private static final String[] validCommands = {
-        "go", "quit", "help", "back", "drop", "take", "i", "inventory",
-        "look", "unlock", "lock", "equip", "fight", "hide", "unhide", "use"
-    };
-
+    private HashMap<String, CommandWord> validCommands;
+    
     /**
      * Constructor - initialise the command words.
      */
-    public CommandWords()
-    {
-        // nothing to do at the moment...
+    public CommandWords(){
+        validCommands = new HashMap<>();
+        for (CommandWord command : CommandWord.values()){
+            if (command != CommandWord.UNKNOWN){
+                for (String alias : command.aliases()) {
+                    validCommands.put(alias, command);
+                }
+            }
+        }
     }
 
+    public CommandWord getCommandWord(String commandName){
+        if (validCommands.containsKey(commandName)){
+            return validCommands.get(commandName);
+        } else {
+            return CommandWord.UNKNOWN;
+        }
+    }
+    
     /**
      * Check whether a given String is a valid command word. 
      * @return true if it is, false if it isn't.
      */
-    public boolean isCommand(String aString)
-    {
-        for(int i = 0; i < validCommands.length; i++) {
-            if(validCommands[i].equals(aString))
-                return true;
-        }
-        // if we get here, the string was not found in the commands
-        return false;
+    public boolean isCommand(String aString){
+        return validCommands.containsKey(aString);
     }
 
     /**
      * Print all valid commands to System.out.
      */
-    public void showAll() 
-    {
-        for(String command: validCommands) {
+    public void showAll(){
+        for(String command: validCommands.keySet()) {
             System.out.print(command + "  ");
         }
         System.out.println();

@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=commandString
+comment0.target=CommandWord(java.lang.String)
+comment0.text=\r\n\ Initialise\ with\ the\ corresponding\ command\ string.\r\n\ @param\ commandString\ The\ command\ string.\r\n
+comment1.params=
+comment1.target=java.lang.String\ toString()
+comment1.text=\r\n\ @return\ The\ command\ word\ as\ a\ string.\r\n
+comment2.params=
+comment2.target=java.lang.String[]\ aliases()
+comment2.text=\r\n\ @return\ Array\ with\ all\ names\ associated\ with\ command\r\n
+numComments=3

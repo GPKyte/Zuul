@@ -54,15 +54,6 @@ public class Game
     }
     
     /**
-     * Main method to play outside of BlueJ
-     * @param none
-     */
-    public static void main(String[] args){
-        Game zuul = new Game();
-        zuul.play();
-    }
-    
-    /**
      *  Main play routine.  Loops until end of play.
      */
     public void play(){            
@@ -191,63 +182,60 @@ public class Game
     private boolean processCommand(Command command){
         boolean wantToQuit = false;
 
-        if(command.isUnknown()){
-            System.out.println("I don't know what you mean...");
-            return false;
-        }
-
-        String commandWord = command.getCommandWord();
+        CommandWord commandWord = command.getCommandWord();
         switch (commandWord){
-            case "help":
+            case UNKNOWN:
+                System.out.println("I don't know what you mean");
+                break;            
+            case HELP:
                 printHelp();
                 break;
-            case "go":
+            case GO:
                 goRoom(command);                
                 moveNPC();
                 break;
-            case "back":
+            case BACK:
                 goBack(hero);
                 moveNPC();
                 break;
-            case "take":
+            case TAKE:
                 pickUp(hero, command);
                 break;
-            case "drop":
+            case DROP:
                 putDown(hero, command);
                 break;
-            case "look":
+            case LOOK:
                 look(hero);
                 break;
-            case "i":
-            case "inventory":
+            case INVENTORY:
                 System.out.println(hero.getInventory());
                 break;
-            case "unlock":
+            case UNLOCK:
                 changeLockTo(hero, command, false);
                 moveNPC();
                 break;
-            case "lock":
+            case LOCK:
                 changeLockTo(hero, command, true);
                 moveNPC();
                 break;
-            case "hide":
+            case HIDE:
                 hide(hero);
                 moveNPC();
                 break;
-            case "unhide":
+            case UNHIDE:
                 unhide(hero);
                 moveNPC();
                 break;
-            case "use":
+            case USE:
                 interact(command);
                 break;                
-            case "equip":
+            case EQUIP:
                 equip(command);
                 break;
-            case "fight":
+            case FIGHT:
                 fight(hero, command);
                 break;
-            case "quit":
+            case QUIT:
                 wantToQuit = quit(command);
                 break;
             default:
